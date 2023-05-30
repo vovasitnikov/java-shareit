@@ -1,7 +1,5 @@
 package ru.practicum.shareit.user.service;
 
-import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.hibernate.exception.ConstraintViolationException;
@@ -15,13 +13,10 @@ import ru.practicum.shareit.user.dto.UserDto;
 import lombok.extern.slf4j.Slf4j;
 import lombok.AllArgsConstructor;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import static ru.practicum.shareit.user.mapper.UserMapper.*;
 import static java.util.stream.Collectors.*;
-
-
 
 @Slf4j
 @Service
