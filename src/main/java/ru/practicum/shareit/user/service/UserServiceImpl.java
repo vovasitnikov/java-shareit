@@ -1,5 +1,7 @@
 package ru.practicum.shareit.user.service;
 
+import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.hibernate.exception.ConstraintViolationException;
@@ -13,6 +15,7 @@ import ru.practicum.shareit.user.dto.UserDto;
 import lombok.extern.slf4j.Slf4j;
 import lombok.AllArgsConstructor;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import static ru.practicum.shareit.user.mapper.UserMapper.*;
@@ -28,8 +31,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    @Transactional
-    public UserDto save(UserDto userDto) {
+    @Transactional(rollbackFor = {EmailException.class})
+    public UserDto save(UserDto userDto) throws EmailException {
         validate(userDto);
         try {
             return mapToUserDto(userRepository.save(mapToUser(userDto)));
