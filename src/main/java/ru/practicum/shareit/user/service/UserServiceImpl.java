@@ -1,7 +1,5 @@
 package ru.practicum.shareit.user.service;
 
-import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.hibernate.exception.ConstraintViolationException;
@@ -14,13 +12,12 @@ import org.springframework.stereotype.Service;
 import ru.practicum.shareit.user.dto.UserDto;
 import lombok.extern.slf4j.Slf4j;
 import lombok.AllArgsConstructor;
+import ru.practicum.shareit.user.repository.UserRepositoryHashMap;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import static ru.practicum.shareit.user.mapper.UserMapper.*;
 import static java.util.stream.Collectors.*;
-
 
 
 @Slf4j
@@ -29,13 +26,15 @@ import static java.util.stream.Collectors.*;
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final UserRepositoryHashMap userRepositoryHashMap;
 
     @Override
     @Transactional(rollbackFor = {EmailException.class})
     public UserDto save(UserDto userDto) throws EmailException {
         validate(userDto);
         try {
-            return mapToUserDto(userRepository.save(mapToUser(userDto)));
+            return userRepositoryHashMap.save(userDto);
+            //return mapToUserDto(userRepository.save(mapToUser(userDto)));
         } catch (DataIntegrityViolationException e) {
             if (e.getCause() instanceof ConstraintViolationException) {
                 throw new EmailException("User with email: " + userDto.getEmail() + " is already exist.");
