@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
+import ru.practicum.shareit.error.EmailException;
 import ru.practicum.shareit.error.NotFoundException;
 import ru.practicum.shareit.user.dto.UserDto;
 
@@ -17,27 +19,38 @@ import java.util.Map;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
+@Slf4j
 public class UserRepositoryHashMap {
-    private HashMap<Long, UserDto> usersList = new HashMap<>();
+    private static HashMap<Long, UserDto> usersList = new HashMap<>();
 
-    public UserDto save(UserDto userDto) {
+    public UserDto save(UserDto userDto) throws EmailException{
         //наибольший айдишник
         //так я генерирую айдишник
         //а где он тогда будет формироваться, если не здесь???
         //и как?
-        Map.Entry<Long, UserDto> maxId = null;
-        for (Map.Entry<Long, UserDto> entry : usersList.entrySet()) {
-            if (maxId == null || (entry.getKey() > maxId.getKey())) {
-                maxId = entry;
+//        Map.Entry<Long, UserDto> maxId = null;
+//        for (Map.Entry<Long, UserDto> entry : usersList.entrySet()) {
+//            if (maxId == null || (entry.getKey() > maxId.getKey())) {
+//                maxId = entry;
+//            }
+//        }
+        if (usersList.size() == 0) {
+            userDto.setId(1L);
+        } else {
+            userDto.setId(usersList.size() + 1L);
+        }
+        for (Map.Entry<Long, UserDto> values : usersList.entrySet()) {
+            if (userDto.getEmail().equals(values.getValue().getEmail())) {
+                throw new EmailException("User with email: " + userDto.getEmail() + " is already exist.");
             }
         }
-        Long generateId = maxId.getKey() + 1;
-        usersList.put(generateId, userDto);
+//        Long generateId = maxId.getKey() + 1;
+        usersList.put(userDto.getId(), userDto);
         return userDto;
     }
 
     public UserDto update(UserDto userDto, Long userId) {
+        userDto.setId(userId);
         usersList.put(userDto.getId(), userDto);
         return userDto;
     }
@@ -54,8 +67,7 @@ public class UserRepositoryHashMap {
 
     public List<UserDto> getAll() {
         List<UserDto> userDtoList = new ArrayList<>();
-        for (Map.Entry<Long, UserDto> pair: usersList.entrySet())
-        {
+        for (Map.Entry<Long, UserDto> pair : usersList.entrySet()) {
             userDtoList.add(pair.getValue());
         }
         return userDtoList;

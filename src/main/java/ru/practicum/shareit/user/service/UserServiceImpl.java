@@ -20,17 +20,10 @@ public class UserServiceImpl implements UserService {
     private final UserRepositoryHashMap userRepositoryHashMap;
 
     @Override
-    public UserDto save(UserDto userDto) throws EmailException {
+    public UserDto save(UserDto userDto) throws EmailException, ValidationException {
 
-        try {
-            validate(userDto);
-            return userRepositoryHashMap.save(userDto);
-        } catch (DataIntegrityViolationException e) {
-            if (e.getCause() instanceof ConstraintViolationException) {
-                throw new EmailException("User with email: " + userDto.getEmail() + " is already exist.");
-            }
-        }
-        return null;
+        validate(userDto);
+        return userRepositoryHashMap.save(userDto);
     }
 
     @Override
