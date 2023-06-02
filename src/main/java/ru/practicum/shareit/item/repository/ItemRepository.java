@@ -1,3 +1,4 @@
+/*
 package ru.practicum.shareit.item.repository;
 
 import org.springframework.data.domain.Page;
@@ -29,3 +30,4 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     @Query(searchQuery)
     List<Item> search(String text);
 }
+*/

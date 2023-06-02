@@ -17,6 +17,7 @@ import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.CommentRepository;
 import ru.practicum.shareit.item.repository.ItemRepository;
+import ru.practicum.shareit.item.repository.ItemRepositoryHashMap;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.mapper.ItemRequestMapper;
 import ru.practicum.shareit.request.model.ItemRequest;
@@ -42,13 +43,12 @@ import static ru.practicum.shareit.utils.Pagination.makePageRequest;
 @AllArgsConstructor
 @Transactional(readOnly = true)
 public class ItemServiceImpl implements ItemService {
-    private final CommentRepository commentRepository;
-    private final ItemRepository itemRepository;
+
+    private final ItemRepositoryHashMap itemRepositoryHashMap;
     private final BookingService bookingService;
     private final UserService userService;
 
     @Override
-    @Transactional
     public ItemDto save(ItemDto itemDto, ItemRequestDto itemRequestDto, Long userId) {
         validate(itemDto);
         var user = mapToUser(userService.get(userId));
@@ -57,12 +57,11 @@ public class ItemServiceImpl implements ItemService {
         if (itemRequestDto != null)
             item.setRequest(ItemRequestMapper.mapToItemRequest(
                     itemRequestDto, userService.get(itemRequestDto.getRequesterId())));
-        var save = itemRepository.save(item);
+        var save = itemRepositoryHashMap.save(item);
         return mapToItemDto(save);
     }
 
     @Override
-    @Transactional
     public ItemDto update(ItemDto itemDto, Long userId) {
         if (userId == null) throw new ValidationException("User ID cannot be null");
         var item = itemRepository.findById(itemDto.getId()).orElseThrow(

@@ -19,21 +19,13 @@ import java.util.Map;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @Slf4j
 public class UserRepositoryHashMap {
     private static HashMap<Long, UserDto> usersList = new HashMap<>();
 
-    public UserDto save(UserDto userDto) throws EmailException{
-        //наибольший айдишник
-        //так я генерирую айдишник
-        //а где он тогда будет формироваться, если не здесь???
-        //и как?
-//        Map.Entry<Long, UserDto> maxId = null;
-//        for (Map.Entry<Long, UserDto> entry : usersList.entrySet()) {
-//            if (maxId == null || (entry.getKey() > maxId.getKey())) {
-//                maxId = entry;
-//            }
-//        }
+    public UserDto save(UserDto userDto) throws EmailException {
+
         if (usersList.size() == 0) {
             userDto.setId(1L);
         } else {
@@ -44,15 +36,17 @@ public class UserRepositoryHashMap {
                 throw new EmailException("User with email: " + userDto.getEmail() + " is already exist.");
             }
         }
-//        Long generateId = maxId.getKey() + 1;
         usersList.put(userDto.getId(), userDto);
         return userDto;
     }
 
     public UserDto update(UserDto userDto, Long userId) {
-        userDto.setId(userId);
-        usersList.put(userDto.getId(), userDto);
-        return userDto;
+        UserDto userDtoFromBase = usersList.get(userId);
+        if (userDtoFromBase == null) throw new NotFoundException("User does not exists");
+        if (userDto.getEmail() != null) userDtoFromBase.setEmail(userDto.getEmail());
+        if (userDto.getName() != null) userDtoFromBase.setName(userDto.getName());
+        usersList.put(userId, userDtoFromBase);
+        return userDtoFromBase;
     }
 
     public UserDto get(Long userId) {

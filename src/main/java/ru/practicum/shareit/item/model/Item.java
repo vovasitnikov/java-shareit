@@ -8,9 +8,7 @@ import javax.persistence.*;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-/**
- * TODO Sprint add-controllers.
- */
+
 @Entity
 @Getter
 @Setter

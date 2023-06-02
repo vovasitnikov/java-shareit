@@ -1,7 +1,5 @@
 package ru.practicum.shareit.user.service;
 
-import org.springframework.dao.DataIntegrityViolationException;
-import org.hibernate.exception.ConstraintViolationException;
 import ru.practicum.shareit.error.ValidationException;
 import ru.practicum.shareit.error.EmailException;
 import org.springframework.stereotype.Service;
