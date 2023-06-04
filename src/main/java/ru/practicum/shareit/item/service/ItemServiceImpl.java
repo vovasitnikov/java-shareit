@@ -15,8 +15,7 @@ import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.mapper.CommentMapper;
 import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.item.repository.CommentRepository;
-import ru.practicum.shareit.item.repository.ItemRepository;
+import ru.practicum.shareit.item.repository.CommentRepositoryHashMap;
 import ru.practicum.shareit.item.repository.ItemRepositoryHashMap;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.mapper.ItemRequestMapper;
@@ -36,7 +35,6 @@ import static ru.practicum.shareit.item.mapper.CommentMapper.mapToComment;
 import static ru.practicum.shareit.item.mapper.CommentMapper.mapToCommentDto;
 import static ru.practicum.shareit.item.mapper.ItemMapper.*;
 import static ru.practicum.shareit.user.mapper.UserMapper.mapToUser;
-import static ru.practicum.shareit.utils.Pagination.makePageRequest;
 
 @Slf4j
 @Service
@@ -45,6 +43,7 @@ import static ru.practicum.shareit.utils.Pagination.makePageRequest;
 public class ItemServiceImpl implements ItemService {
 
     private final ItemRepositoryHashMap itemRepositoryHashMap;
+    private final CommentRepositoryHashMap commentRepositoryHashMap;
     private final BookingService bookingService;
     private final UserService userService;
 
@@ -116,7 +115,7 @@ public class ItemServiceImpl implements ItemService {
                 .collect(toList());
     }
 
-/*    @Override
+    @Override
     public List<ItemDto> search(String text, Long userId, Integer from, Integer size) {
         Stream<Item> stream;
         if (text.isBlank()) return emptyList();
@@ -128,7 +127,7 @@ public class ItemServiceImpl implements ItemService {
         return stream
                 .map(ItemMapper::mapToItemDto)
                 .collect(toList());
-    }*/
+    }
 
     @Override
     @Transactional
@@ -146,13 +145,13 @@ public class ItemServiceImpl implements ItemService {
         comment.setItem(item);
         comment.setAuthor(user);
         comment.setCreated(now());
-        var save = commentRepository.save(comment);
+        var save = commentRepositoryHashMap.save(comment);
         return mapToCommentDto(save);
     }
 
     @Override
     public List<CommentDto> getAllComments() {
-        return commentRepository.findAll()
+        return commentRepositoryHashMap.findAll()
                 .stream()
                 .map(CommentMapper::mapToCommentDto)
                 .collect(toList());
@@ -160,7 +159,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<CommentDto> getAllComments(Long itemId) {
-        return commentRepository.findCommentByItem_IdIsOrderByCreated(itemId)
+        return commentRepositoryHashMap.findCommentByItem_IdIsOrderByCreated(itemId)
                 .stream()
                 .map(CommentMapper::mapToCommentDto)
                 .collect(toList());
