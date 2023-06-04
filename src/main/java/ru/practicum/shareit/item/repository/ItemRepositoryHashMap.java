@@ -38,4 +38,8 @@ public class ItemRepositoryHashMap {
         return   itemsList.get(id);
     }
 
+    public void deleteById(Long id) {
+        itemsList.remove(id);
+    }
+
 }

@@ -80,8 +80,8 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemAllFieldsDto get(Long id, Long userId) {
-        var item = itemRepository.findById(id).orElseThrow(
-                () -> new NotFoundException("Item with id#" + id + " does not exist"));
+        var item = itemRepositoryHashMap.findById(id);
+            if (item == null) new NotFoundException("Item with id#" + id + " does not exist");
         var comments = getAllComments(id);
         var bookings = bookingService.getBookingsByItem(item.getId(), userId);
         return mapToItemAllFieldsDto(item,
@@ -92,7 +92,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void delete(Long id) {
-        itemRepository.deleteById(id);
+        itemRepositoryHashMap.deleteById(id);
     }
 
     @Override
@@ -106,9 +106,9 @@ public class ItemServiceImpl implements ItemService {
                 .collect(groupingBy(CommentDto::getItemId));
         var pageRequest = makePageRequest(from, size, Sort.by("id").ascending());
         if (pageRequest == null)
-            stream = itemRepository.findAllByOwner_IdIs(userId).stream();
+            stream = itemRepositoryHashMap.findAllByOwner_IdIs(userId).stream();
         else
-            stream = itemRepository.findAllByOwner_IdIs(userId, pageRequest).stream();
+            stream = itemRepositoryHashMap.findAllByOwner_IdIs(userId, pageRequest).stream();
         return stream.map(item -> ItemMapper.mapToItemAllFieldsDto(item,
                         getLastItem(bookings.get(item.getId())),
                         getNextItem(bookings.get(item.getId())),
@@ -116,19 +116,19 @@ public class ItemServiceImpl implements ItemService {
                 .collect(toList());
     }
 
-    @Override
+/*    @Override
     public List<ItemDto> search(String text, Long userId, Integer from, Integer size) {
         Stream<Item> stream;
         if (text.isBlank()) return emptyList();
         var pageRequest = makePageRequest(from, size, Sort.by("id").ascending());
         if (pageRequest == null)
-            stream = itemRepository.search(text).stream();
+            stream = itemRepositoryHashMap.search(text).stream();
         else
-            stream = itemRepository.search(text, pageRequest).stream();
+            stream = itemRepositoryHashMap.search(text, pageRequest).stream();
         return stream
                 .map(ItemMapper::mapToItemDto)
                 .collect(toList());
-    }
+    }*/
 
     @Override
     @Transactional
@@ -137,8 +137,8 @@ public class ItemServiceImpl implements ItemService {
                                   Long userId) {
         if (commentDto.getText() == null || commentDto.getText().isBlank())
             throw new ValidationException("Comment text cannot be blank");
-        var item = itemRepository.findById(itemId).orElseThrow(
-                () -> new NotFoundException("Item with id#" + itemId + " does not exist"));
+        var item = itemRepositoryHashMap.findById(itemId);
+                if(item == null) new NotFoundException("Item with id#" + itemId + " does not exist"));
         var user = mapToUser(userService.get(userId));
         var bookings = bookingService.getAllBookings(userId, PAST.name());
         if (bookings.isEmpty()) throw new ValidationException("User cannot make comments");
@@ -168,7 +168,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemDto> getItemsByRequestId(Long requestId) {
-        return itemRepository.findAllByRequest_IdIs(requestId)
+        return itemRepositoryHashMap.findAllByRequest_IdIs(requestId)
                 .stream()
                 .map(ItemMapper::mapToItemDto)
                 .collect(toList());
@@ -176,7 +176,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemDto> getItemsByRequests(List<ItemRequest> requests) {
-        return itemRepository.findAllByRequestIn(requests)
+        return itemRepositoryHashMap.findAllByRequestIn(requests)
                 .stream()
                 .map(ItemMapper::mapToItemDto)
                 .collect(toList());
