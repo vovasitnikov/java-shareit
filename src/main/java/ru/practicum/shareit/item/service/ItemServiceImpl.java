@@ -64,8 +64,8 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDto update(ItemDto itemDto, Long userId) {
         if (userId == null) throw new ValidationException("User ID cannot be null");
-        var item = itemRepository.findById(itemDto.getId()).orElseThrow(
-                () -> new NotFoundException("Item with id#" + itemDto.getId() + " does not exist"));
+        var item = itemRepositoryHashMap.findById(itemDto.getId());
+                if (item == null) new NotFoundException("Item with id#" + itemDto.getId() + " does not exist");
         if (!item.getOwner().getId().equals(userId))
             throw new NotFoundException("Item has another user");
         if (itemDto.getName() != null)
@@ -74,7 +74,7 @@ public class ItemServiceImpl implements ItemService {
             item.setDescription(itemDto.getDescription());
         if (itemDto.getAvailable() != null)
             item.setAvailable(itemDto.getAvailable());
-        var save = itemRepository.save(item);
+        var save = itemRepositoryHashMap.save(item);
         return mapToItemDto(save);
     }
 

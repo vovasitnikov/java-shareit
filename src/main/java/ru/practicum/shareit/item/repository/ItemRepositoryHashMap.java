@@ -23,7 +23,6 @@ public class ItemRepositoryHashMap {
 
     private static HashMap<Long, Item> itemsList = new HashMap<>();
 
-
     public  Item save(Item item) throws EmailException {
 
         if (itemsList.size() == 0) {
@@ -34,4 +33,9 @@ public class ItemRepositoryHashMap {
         itemsList.put(item.getId(), item);
         return item;
     }
+
+    public Item findById(Long id){
+        return   itemsList.get(id);
+    }
+
 }
