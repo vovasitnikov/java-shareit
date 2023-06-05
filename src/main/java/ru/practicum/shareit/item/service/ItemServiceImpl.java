@@ -15,7 +15,6 @@ import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.mapper.CommentMapper;
 import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.item.repository.CommentRepositoryHashMap;
 import ru.practicum.shareit.item.repository.ItemRepositoryHashMap;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.mapper.ItemRequestMapper;
@@ -35,6 +34,7 @@ import static ru.practicum.shareit.item.mapper.CommentMapper.mapToComment;
 import static ru.practicum.shareit.item.mapper.CommentMapper.mapToCommentDto;
 import static ru.practicum.shareit.item.mapper.ItemMapper.*;
 import static ru.practicum.shareit.user.mapper.UserMapper.mapToUser;
+import static ru.practicum.shareit.utils.Pagination.makePageRequest;
 
 @Slf4j
 @Service
@@ -43,7 +43,6 @@ import static ru.practicum.shareit.user.mapper.UserMapper.mapToUser;
 public class ItemServiceImpl implements ItemService {
 
     private final ItemRepositoryHashMap itemRepositoryHashMap;
-    private final CommentRepositoryHashMap commentRepositoryHashMap;
     private final BookingService bookingService;
     private final UserService userService;
 
@@ -104,15 +103,16 @@ public class ItemServiceImpl implements ItemService {
         var comments = getAllComments().stream()
                 .collect(groupingBy(CommentDto::getItemId));
         var pageRequest = makePageRequest(from, size, Sort.by("id").ascending());
-        if (pageRequest == null)
-            stream = itemRepositoryHashMap.findAllByOwner_IdIs(userId).stream();
-        else
-            stream = itemRepositoryHashMap.findAllByOwner_IdIs(userId, pageRequest).stream();
-        return stream.map(item -> ItemMapper.mapToItemAllFieldsDto(item,
-                        getLastItem(bookings.get(item.getId())),
-                        getNextItem(bookings.get(item.getId())),
-                        comments.get(item.getId())))
-                .collect(toList());
+//        if (pageRequest == null)
+//            stream = itemRepositoryHashMap.findAllByOwner_IdIs(userId).stream();
+//        else
+//            stream = itemRepositoryHashMap.findAllByOwner_IdIs(userId, pageRequest).stream();
+//        return stream.map(item -> ItemMapper.mapToItemAllFieldsDto(item,
+//                        getLastItem(bookings.get(item.getId())),
+//                        getNextItem(bookings.get(item.getId())),
+//                        comments.get(item.getId())))
+//                .collect(toList());
+        return null;
     }
 
     @Override
@@ -120,13 +120,14 @@ public class ItemServiceImpl implements ItemService {
         Stream<Item> stream;
         if (text.isBlank()) return emptyList();
         var pageRequest = makePageRequest(from, size, Sort.by("id").ascending());
-        if (pageRequest == null)
-            stream = itemRepositoryHashMap.search(text).stream();
-        else
-            stream = itemRepositoryHashMap.search(text, pageRequest).stream();
-        return stream
-                .map(ItemMapper::mapToItemDto)
-                .collect(toList());
+//        if (pageRequest == null)
+//            stream = itemRepositoryHashMap.search(text).stream();
+//        else
+//            stream = itemRepositoryHashMap.search(text, pageRequest).stream();
+//        return stream
+//                .map(ItemMapper::mapToItemDto)
+//                .collect(toList());
+        return null;
     }
 
     @Override
@@ -137,7 +138,7 @@ public class ItemServiceImpl implements ItemService {
         if (commentDto.getText() == null || commentDto.getText().isBlank())
             throw new ValidationException("Comment text cannot be blank");
         var item = itemRepositoryHashMap.findById(itemId);
-                if(item == null) new NotFoundException("Item with id#" + itemId + " does not exist"));
+                if(item == null) new NotFoundException("Item with id#" + itemId + " does not exist");
         var user = mapToUser(userService.get(userId));
         var bookings = bookingService.getAllBookings(userId, PAST.name());
         if (bookings.isEmpty()) throw new ValidationException("User cannot make comments");
@@ -145,40 +146,44 @@ public class ItemServiceImpl implements ItemService {
         comment.setItem(item);
         comment.setAuthor(user);
         comment.setCreated(now());
-        var save = commentRepositoryHashMap.save(comment);
-        return mapToCommentDto(save);
+        //var save = commentRepositoryHashMap.save(comment);
+        return mapToCommentDto(null);
     }
 
     @Override
     public List<CommentDto> getAllComments() {
-        return commentRepositoryHashMap.findAll()
-                .stream()
-                .map(CommentMapper::mapToCommentDto)
-                .collect(toList());
+        return null;
+//        return commentRepositoryHashMap.findAll()
+//                .stream()
+//                .map(CommentMapper::mapToCommentDto)
+//                .collect(toList());
     }
 
     @Override
     public List<CommentDto> getAllComments(Long itemId) {
-        return commentRepositoryHashMap.findCommentByItem_IdIsOrderByCreated(itemId)
-                .stream()
-                .map(CommentMapper::mapToCommentDto)
-                .collect(toList());
+        return null;
+//        return commentRepositoryHashMap.findCommentByItem_IdIsOrderByCreated(itemId)
+//                .stream()
+//                .map(CommentMapper::mapToCommentDto)
+//                .collect(toList());
     }
 
     @Override
     public List<ItemDto> getItemsByRequestId(Long requestId) {
-        return itemRepositoryHashMap.findAllByRequest_IdIs(requestId)
-                .stream()
-                .map(ItemMapper::mapToItemDto)
-                .collect(toList());
+        return null;
+//        return itemRepositoryHashMap.findAllByRequest_IdIs(requestId)
+//                .stream()
+//                .map(ItemMapper::mapToItemDto)
+//                .collect(toList());
     }
 
     @Override
     public List<ItemDto> getItemsByRequests(List<ItemRequest> requests) {
-        return itemRepositoryHashMap.findAllByRequestIn(requests)
-                .stream()
-                .map(ItemMapper::mapToItemDto)
-                .collect(toList());
+        return null;
+//        return itemRepositoryHashMap.findAllByRequestIn(requests)
+//                .stream()
+//                .map(ItemMapper::mapToItemDto)
+//                .collect(toList());
     }
 
     private BookingAllFieldsDto getNextItem(List<BookingAllFieldsDto> bookings) {

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
+//@NoArgsConstructor
 @Slf4j
 public class CommentRepositoryHashMap {
 }

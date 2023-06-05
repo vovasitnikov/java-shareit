@@ -17,7 +17,6 @@ import java.util.HashMap;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 @Slf4j
 public class ItemRepositoryHashMap {
 

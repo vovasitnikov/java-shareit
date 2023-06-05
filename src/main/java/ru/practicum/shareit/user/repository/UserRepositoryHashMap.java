@@ -2,7 +2,6 @@ package ru.practicum.shareit.user.repository;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -10,30 +9,32 @@ import ru.practicum.shareit.error.EmailException;
 import ru.practicum.shareit.error.NotFoundException;
 import ru.practicum.shareit.user.dto.UserDto;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 @Slf4j
 public class UserRepositoryHashMap {
     private static HashMap<Long, UserDto> usersList = new HashMap<>();
+    private static long counter;
 
     public UserDto save(UserDto userDto) throws EmailException {
-
+        long id;
+        id = usersList.keySet().stream().max(Long::compareTo).orElse(1L);
         if (usersList.size() == 0) {
-            userDto.setId(1L);
+            userDto.setId(id);
+            counter++;
         } else {
-            userDto.setId(usersList.size() + 1L);
-        }
-        for (Map.Entry<Long, UserDto> values : usersList.entrySet()) {
-            if (userDto.getEmail().equals(values.getValue().getEmail())) {
-                throw new EmailException("User with email: " + userDto.getEmail() + " is already exist.");
+            for (Map.Entry<Long, UserDto> values : usersList.entrySet()) {
+                if (values.getValue().getEmail().equals(userDto.getEmail())) {
+                    throw new EmailException("User with email: " + userDto.getEmail() + " is already exist.");
+                }
+            }
+            counter++;
+            if (counter > id) {
+                userDto.setId(counter);
             }
         }
         usersList.put(userDto.getId(), userDto);
@@ -43,6 +44,11 @@ public class UserRepositoryHashMap {
     public UserDto update(UserDto userDto, Long userId) {
         UserDto userDtoFromBase = usersList.get(userId);
         if (userDtoFromBase == null) throw new NotFoundException("User does not exists");
+        for (Map.Entry<Long, UserDto> values : usersList.entrySet()) {
+            if (values.getValue().getEmail().equals(userDto.getEmail()) && !Objects.equals(userId, values.getKey())) {
+                throw new EmailException("User with email: " + userDto.getEmail() + " is already exist.");
+            }
+        }
         if (userDto.getEmail() != null) userDtoFromBase.setEmail(userDto.getEmail());
         if (userDto.getName() != null) userDtoFromBase.setName(userDto.getName());
         usersList.put(userId, userDtoFromBase);
