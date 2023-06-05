@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.weaver.ast.Not;
 import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.error.EmailException;
 import ru.practicum.shareit.error.NotFoundException;
@@ -55,7 +56,7 @@ public class UserRepositoryHashMap {
         return userDtoFromBase;
     }
 
-    public UserDto get(Long userId) {
+    public UserDto get(Long userId) throws NotFoundException {
         UserDto userDto = usersList.get(userId);
         if (userDto == null) throw new NotFoundException("User does not exists");
         return userDto;

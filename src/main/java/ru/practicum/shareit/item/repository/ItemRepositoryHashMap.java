@@ -21,20 +21,31 @@ import java.util.HashMap;
 public class ItemRepositoryHashMap {
 
     private static HashMap<Long, Item> itemsList = new HashMap<>();
+    private static long counter;
 
-    public  Item save(Item item) throws EmailException {
-
+    public Item save(Item item) throws EmailException {
+        long id;
+        id = itemsList.keySet().stream().max(Long::compareTo).orElse(1L);
         if (itemsList.size() == 0) {
-            item.setId(1L);
+            item.setId(id);
+            counter++;
         } else {
-            item.setId(itemsList.size() + 1L);
+            counter++;
+            if (counter > id) {
+                item.setId(counter);
+            }
         }
         itemsList.put(item.getId(), item);
         return item;
     }
 
-    public Item findById(Long id){
-        return   itemsList.get(id);
+    public Item update(Item item) {
+        itemsList.put(item.getId(), item);
+        return item;
+    }
+
+    public Item findById(Long id) {
+        return itemsList.get(id);
     }
 
     public void deleteById(Long id) {

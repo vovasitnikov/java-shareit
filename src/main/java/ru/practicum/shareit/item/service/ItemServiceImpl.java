@@ -19,6 +19,7 @@ import ru.practicum.shareit.item.repository.ItemRepositoryHashMap;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.mapper.ItemRequestMapper;
 import ru.practicum.shareit.request.model.ItemRequest;
+import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserService;
 
 import java.util.List;
@@ -39,7 +40,7 @@ import static ru.practicum.shareit.utils.Pagination.makePageRequest;
 @Slf4j
 @Service
 @AllArgsConstructor
-@Transactional(readOnly = true)
+//@Transactional(readOnly = true)
 public class ItemServiceImpl implements ItemService {
 
     private final ItemRepositoryHashMap itemRepositoryHashMap;
@@ -50,6 +51,7 @@ public class ItemServiceImpl implements ItemService {
     public ItemDto save(ItemDto itemDto, ItemRequestDto itemRequestDto, Long userId) {
         validate(itemDto);
         var user = mapToUser(userService.get(userId));
+        ;
         var item = mapToItem(itemDto);
         item.setOwner(user);
         if (itemRequestDto != null)
@@ -63,7 +65,7 @@ public class ItemServiceImpl implements ItemService {
     public ItemDto update(ItemDto itemDto, Long userId) {
         if (userId == null) throw new ValidationException("User ID cannot be null");
         var item = itemRepositoryHashMap.findById(itemDto.getId());
-                if (item == null) new NotFoundException("Item with id#" + itemDto.getId() + " does not exist");
+        if (item == null) throw new NotFoundException("Item with id#" + itemDto.getId() + " does not exist");
         if (!item.getOwner().getId().equals(userId))
             throw new NotFoundException("Item has another user");
         if (itemDto.getName() != null)
@@ -72,14 +74,14 @@ public class ItemServiceImpl implements ItemService {
             item.setDescription(itemDto.getDescription());
         if (itemDto.getAvailable() != null)
             item.setAvailable(itemDto.getAvailable());
-        var save = itemRepositoryHashMap.save(item);
+        var save = itemRepositoryHashMap.update(item);
         return mapToItemDto(save);
     }
 
     @Override
     public ItemAllFieldsDto get(Long id, Long userId) {
         var item = itemRepositoryHashMap.findById(id);
-            if (item == null) new NotFoundException("Item with id#" + id + " does not exist");
+        if (item == null) new NotFoundException("Item with id#" + id + " does not exist");
         var comments = getAllComments(id);
         var bookings = bookingService.getBookingsByItem(item.getId(), userId);
         return mapToItemAllFieldsDto(item,
@@ -134,11 +136,11 @@ public class ItemServiceImpl implements ItemService {
     @Transactional
     public CommentDto saveComment(CommentDto commentDto,
                                   Long itemId,
-                                  Long userId) {
+                                  Long userId) throws NotFoundException {
         if (commentDto.getText() == null || commentDto.getText().isBlank())
             throw new ValidationException("Comment text cannot be blank");
         var item = itemRepositoryHashMap.findById(itemId);
-                if(item == null) new NotFoundException("Item with id#" + itemId + " does not exist");
+        if (item == null) throw new NotFoundException("Item with id#" + itemId + " does not exist");
         var user = mapToUser(userService.get(userId));
         var bookings = bookingService.getAllBookings(userId, PAST.name());
         if (bookings.isEmpty()) throw new ValidationException("User cannot make comments");
