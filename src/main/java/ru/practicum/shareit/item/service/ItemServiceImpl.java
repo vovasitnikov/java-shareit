@@ -22,6 +22,7 @@ import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -51,7 +52,6 @@ public class ItemServiceImpl implements ItemService {
     public ItemDto save(ItemDto itemDto, ItemRequestDto itemRequestDto, Long userId) {
         validate(itemDto);
         var user = mapToUser(userService.get(userId));
-        ;
         var item = mapToItem(itemDto);
         item.setOwner(user);
         if (itemRequestDto != null)
@@ -96,15 +96,18 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemAllFieldsDto> getAllItems(Long userId, Integer from, Integer size) {
-        Stream<Item> stream;
+    public List<ItemDto> getAllItems(Long userId, Integer from, Integer size) {
+//        Stream<Item> stream;
         if (userId == null) throw new ValidationException("User ID cannot be null");
-        var bookings = bookingService.getBookingsByOwnerId(userId, null)
-                .stream()
-                .collect(groupingBy((BookingAllFieldsDto bookingAllFieldsDto) -> bookingAllFieldsDto.getItem().getId()));
-        var comments = getAllComments().stream()
-                .collect(groupingBy(CommentDto::getItemId));
-        var pageRequest = makePageRequest(from, size, Sort.by("id").ascending());
+        List<Item> items = itemRepositoryHashMap.getAll().stream().filter(item -> item.getOwner().getId().equals(userId)).collect(toList());
+        List<ItemDto> result = new ArrayList<>();
+        items.forEach(i -> result.add(mapToItemDto(i)));
+//        var bookings = bookingService.getBookingsByOwnerId(userId, null)
+//                .stream()
+//                .collect(groupingBy((BookingAllFieldsDto bookingAllFieldsDto) -> bookingAllFieldsDto.getItem().getId()));
+//        var comments = getAllComments().stream()
+//                .collect(groupingBy(CommentDto::getItemId));
+//        var pageRequest = makePageRequest(from, size, Sort.by("id").ascending());
 //        if (pageRequest == null)
 //            stream = itemRepositoryHashMap.findAllByOwner_IdIs(userId).stream();
 //        else
@@ -114,14 +117,22 @@ public class ItemServiceImpl implements ItemService {
 //                        getNextItem(bookings.get(item.getId())),
 //                        comments.get(item.getId())))
 //                .collect(toList());
-        return null;
+        return result;
     }
 
     @Override
     public List<ItemDto> search(String text, Long userId, Integer from, Integer size) {
-        Stream<Item> stream;
+//        Stream<Item> stream;
+        if (userId == null) throw new ValidationException("User ID cannot be null");
         if (text.isBlank()) return emptyList();
-        var pageRequest = makePageRequest(from, size, Sort.by("id").ascending());
+        List<Item> items = itemRepositoryHashMap.getAll()
+                .stream()
+//                .filter(item -> item.getOwner().getId().equals(userId))
+                .filter(item -> item.getDescription().toLowerCase().contains(text.toLowerCase()) && item.getAvailable())
+                .collect(toList());
+        List<ItemDto> result = new ArrayList<>();
+        items.forEach(i -> result.add(mapToItemDto(i)));
+//        var pageRequest = makePageRequest(from, size, Sort.by("id").ascending());
 //        if (pageRequest == null)
 //            stream = itemRepositoryHashMap.search(text).stream();
 //        else
@@ -129,11 +140,10 @@ public class ItemServiceImpl implements ItemService {
 //        return stream
 //                .map(ItemMapper::mapToItemDto)
 //                .collect(toList());
-        return null;
+        return result;
     }
 
     @Override
-    @Transactional
     public CommentDto saveComment(CommentDto commentDto,
                                   Long itemId,
                                   Long userId) throws NotFoundException {

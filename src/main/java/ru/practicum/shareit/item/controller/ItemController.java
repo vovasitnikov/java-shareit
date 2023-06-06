@@ -56,9 +56,9 @@ public class ItemController {
     }
 
     @GetMapping()
-    public List<ItemAllFieldsDto> getAllItems(@RequestHeader(value = HEADER_SHARER_USER_ID, required = false) Long userId,
-                                              @RequestParam(required = false) Integer from,
-                                              @RequestParam(required = false) Integer size) {
+    public List<ItemDto> getAllItems(@RequestHeader(value = HEADER_SHARER_USER_ID, required = false) Long userId,
+                                     @RequestParam(required = false) Integer from,
+                                     @RequestParam(required = false) Integer size) {
         return itemService.getAllItems(userId, from, size);
     }
 

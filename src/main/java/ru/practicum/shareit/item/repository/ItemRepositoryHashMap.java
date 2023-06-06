@@ -10,8 +10,12 @@ import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.error.EmailException;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.user.dto.UserDto;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Repository
 @Getter
@@ -36,11 +40,13 @@ public class ItemRepositoryHashMap {
             }
         }
         itemsList.put(item.getId(), item);
+        log.info(itemsList.toString());
         return item;
     }
 
     public Item update(Item item) {
         itemsList.put(item.getId(), item);
+        log.info(itemsList.toString());
         return item;
     }
 
@@ -50,6 +56,14 @@ public class ItemRepositoryHashMap {
 
     public void deleteById(Long id) {
         itemsList.remove(id);
+    }
+
+    public List<Item> getAll() {
+        List<Item> userDtoList = new ArrayList<>();
+        for (Map.Entry<Long, Item> pair : itemsList.entrySet()) {
+            userDtoList.add(pair.getValue());
+        }
+        return userDtoList;
     }
 
 }
