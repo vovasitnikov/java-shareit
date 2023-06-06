@@ -1,7 +1,9 @@
 package ru.practicum.shareit.item.controller;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.shareit.error.NotFoundException;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemAllFieldsDto;
 import ru.practicum.shareit.item.dto.ItemDto;
@@ -16,6 +18,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/items")
+@Slf4j
 public class ItemController {
     private static final String HEADER_SHARER_USER_ID = "X-Sharer-User-Id";
     private final ItemRequestService itemRequestService;
@@ -24,6 +27,9 @@ public class ItemController {
     @PostMapping()
     public ItemDto save(@RequestHeader(value = HEADER_SHARER_USER_ID, required = false) Long userId,
                         @RequestBody ItemDto itemDto) {
+        if (userId == null) {
+            throw new RuntimeException("X-Sharer-User-Id not found");
+        }
         var itemRequestDto = itemDto.getRequestId() != null
                 ? itemRequestService.getItemRequestById(itemDto.getRequestId(), userId)
                 : null;
@@ -50,9 +56,9 @@ public class ItemController {
     }
 
     @GetMapping()
-    public List<ItemAllFieldsDto> getAllItems(@RequestHeader(value = HEADER_SHARER_USER_ID, required = false) Long userId,
-                                              @RequestParam(required = false) Integer from,
-                                              @RequestParam(required = false) Integer size) {
+    public List<ItemDto> getAllItems(@RequestHeader(value = HEADER_SHARER_USER_ID, required = false) Long userId,
+                                     @RequestParam(required = false) Integer from,
+                                     @RequestParam(required = false) Integer size) {
         return itemService.getAllItems(userId, from, size);
     }
 

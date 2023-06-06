@@ -9,7 +9,7 @@ import ru.practicum.shareit.request.model.ItemRequest;
 import java.util.List;
 
 public interface ItemService {
-    List<ItemAllFieldsDto> getAllItems(Long userId, Integer from, Integer size);
+    List<ItemDto> getAllItems(Long userId, Integer from, Integer size);
 
     List<ItemDto> search(String text, Long userId, Integer from, Integer size);
 
