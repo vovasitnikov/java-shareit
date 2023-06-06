@@ -11,9 +11,6 @@ import ru.practicum.shareit.request.service.ItemRequestService;
 
 import java.util.List;
 
-/**
- * TODO Sprint add-controllers.
- */
 @RestController
 @AllArgsConstructor
 @RequestMapping("/items")
@@ -76,4 +73,3 @@ public class ItemController {
         return itemService.saveComment(commentDto, itemId, userId);
     }
 }
-

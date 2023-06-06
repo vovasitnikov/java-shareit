@@ -11,10 +11,6 @@ import java.time.LocalDateTime;
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.IDENTITY;
 
-/**
- * TODO Sprint add-bookings.
- */
-
 @Entity
 @Getter
 @Setter
@@ -45,4 +41,3 @@ public class Booking {
     @Enumerated(STRING)
     private BookingState status;
 }
-

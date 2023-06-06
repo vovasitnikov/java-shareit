@@ -88,49 +88,23 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemDto> getAllItems(Long userId, Integer from, Integer size) {
-//        Stream<Item> stream;
         if (userId == null) throw new ValidationException("User ID cannot be null");
         List<Item> items = itemRepositoryHashMap.getAll().stream().filter(item -> item.getOwner().getId().equals(userId)).collect(toList());
         List<ItemDto> result = new ArrayList<>();
         items.forEach(i -> result.add(mapToItemDto(i)));
-//        var bookings = bookingService.getBookingsByOwnerId(userId, null)
-//                .stream()
-//                .collect(groupingBy((BookingAllFieldsDto bookingAllFieldsDto) -> bookingAllFieldsDto.getItem().getId()));
-//        var comments = getAllComments().stream()
-//                .collect(groupingBy(CommentDto::getItemId));
-//        var pageRequest = makePageRequest(from, size, Sort.by("id").ascending());
-//        if (pageRequest == null)
-//            stream = itemRepositoryHashMap.findAllByOwner_IdIs(userId).stream();
-//        else
-//            stream = itemRepositoryHashMap.findAllByOwner_IdIs(userId, pageRequest).stream();
-//        return stream.map(item -> ItemMapper.mapToItemAllFieldsDto(item,
-//                        getLastItem(bookings.get(item.getId())),
-//                        getNextItem(bookings.get(item.getId())),
-//                        comments.get(item.getId())))
-//                .collect(toList());
         return result;
     }
 
     @Override
     public List<ItemDto> search(String text, Long userId, Integer from, Integer size) {
-//        Stream<Item> stream;
         if (userId == null) throw new ValidationException("User ID cannot be null");
         if (text.isBlank()) return emptyList();
         List<Item> items = itemRepositoryHashMap.getAll()
                 .stream()
-//                .filter(item -> item.getOwner().getId().equals(userId))
                 .filter(item -> item.getDescription().toLowerCase().contains(text.toLowerCase()) && item.getAvailable())
                 .collect(toList());
         List<ItemDto> result = new ArrayList<>();
         items.forEach(i -> result.add(mapToItemDto(i)));
-//        var pageRequest = makePageRequest(from, size, Sort.by("id").ascending());
-//        if (pageRequest == null)
-//            stream = itemRepositoryHashMap.search(text).stream();
-//        else
-//            stream = itemRepositoryHashMap.search(text, pageRequest).stream();
-//        return stream
-//                .map(ItemMapper::mapToItemDto)
-//                .collect(toList());
         return result;
     }
 
@@ -149,44 +123,27 @@ public class ItemServiceImpl implements ItemService {
         comment.setItem(item);
         comment.setAuthor(user);
         comment.setCreated(now());
-        //var save = commentRepositoryHashMap.save(comment);
         return mapToCommentDto(null);
     }
 
     @Override
     public List<CommentDto> getAllComments() {
         return null;
-//        return commentRepositoryHashMap.findAll()
-//                .stream()
-//                .map(CommentMapper::mapToCommentDto)
-//                .collect(toList());
     }
 
     @Override
     public List<CommentDto> getAllComments(Long itemId) {
         return null;
-//        return commentRepositoryHashMap.findCommentByItem_IdIsOrderByCreated(itemId)
-//                .stream()
-//                .map(CommentMapper::mapToCommentDto)
-//                .collect(toList());
     }
 
     @Override
     public List<ItemDto> getItemsByRequestId(Long requestId) {
         return null;
-//        return itemRepositoryHashMap.findAllByRequest_IdIs(requestId)
-//                .stream()
-//                .map(ItemMapper::mapToItemDto)
-//                .collect(toList());
     }
 
     @Override
     public List<ItemDto> getItemsByRequests(List<ItemRequest> requests) {
         return null;
-//        return itemRepositoryHashMap.findAllByRequestIn(requests)
-//                .stream()
-//                .map(ItemMapper::mapToItemDto)
-//                .collect(toList());
     }
 
     private BookingAllFieldsDto getNextItem(List<BookingAllFieldsDto> bookings) {
@@ -218,4 +175,3 @@ public class ItemServiceImpl implements ItemService {
             throw new ValidationException("Available cannot be null");
     }
 }
-

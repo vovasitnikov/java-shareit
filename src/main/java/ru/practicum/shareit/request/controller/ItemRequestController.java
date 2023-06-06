@@ -7,9 +7,6 @@ import ru.practicum.shareit.request.service.ItemRequestService;
 
 import java.util.List;
 
-/**
- * TODO Sprint add-item-requests.
- */
 @RestController
 @AllArgsConstructor
 @RequestMapping("/requests")
@@ -41,4 +38,3 @@ public class ItemRequestController {
         return itemRequestService.getItemRequestById(requestId, userId);
     }
 }
-

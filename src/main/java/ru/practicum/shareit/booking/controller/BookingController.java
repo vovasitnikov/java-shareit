@@ -9,9 +9,6 @@ import ru.practicum.shareit.item.service.ItemService;
 
 import java.util.List;
 
-/**
- * TODO Sprint add-bookings.
- */
 @RestController
 @AllArgsConstructor
 @RequestMapping("/bookings")
@@ -56,4 +53,3 @@ public class BookingController {
         return bookingService.getBookingById(bookingId, userId);
     }
 }
-

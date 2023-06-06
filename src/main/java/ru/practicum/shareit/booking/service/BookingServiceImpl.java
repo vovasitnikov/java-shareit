@@ -303,4 +303,3 @@ public class BookingServiceImpl implements BookingService {
             throw new ValidationException("Incorrect end booking date");
     }
 }
-

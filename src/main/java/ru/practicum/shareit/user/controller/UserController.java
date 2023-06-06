@@ -7,11 +7,6 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-
-/**
- * TODO Sprint add-controllers.
- */
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/users")
@@ -44,6 +39,4 @@ public class UserController {
     public List<UserDto> getAll() {
         return userService.getAll();
     }
-
 }
-

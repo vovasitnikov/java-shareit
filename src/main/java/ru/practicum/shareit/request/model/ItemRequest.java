@@ -8,9 +8,6 @@ import java.time.LocalDateTime;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-/**
- * TODO Sprint add-item-requests.
- */
 @Entity
 @Getter
 @Setter
@@ -34,4 +31,3 @@ public class ItemRequest {
     @Column(name = "created", nullable = false)
     private LocalDateTime created;
 }
-

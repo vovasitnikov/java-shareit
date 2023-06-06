@@ -5,12 +5,8 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.Valid;
 
-
 import static javax.persistence.GenerationType.*;
 
-/**
- * TODO Sprint add-controllers.
- */
 @Entity
 @Getter
 @Setter
