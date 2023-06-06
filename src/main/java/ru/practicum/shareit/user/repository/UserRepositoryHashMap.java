@@ -18,27 +18,32 @@ import java.util.*;
 @Slf4j
 public class UserRepositoryHashMap {
     private static HashMap<Long, UserDto> usersList = new HashMap<>();
-    private static long counter;
+    private static long counter = 0;
 
     public UserDto save(UserDto userDto) throws EmailException {
         long id;
         id = usersList.keySet().stream().max(Long::compareTo).orElse(1L);
         if (usersList.size() == 0) {
             userDto.setId(id);
-            counter++;
+            setCounter(1);
         } else {
             for (Map.Entry<Long, UserDto> values : usersList.entrySet()) {
                 if (values.getValue().getEmail().equals(userDto.getEmail())) {
                     throw new EmailException("User with email: " + userDto.getEmail() + " is already exist.");
                 }
             }
-            counter++;
+            setCounter((int) counter + 1);
+//            counter++;
             if (counter > id) {
                 userDto.setId(counter);
             }
         }
         usersList.put(userDto.getId(), userDto);
         return userDto;
+    }
+
+    public static synchronized void setCounter(int counter) {
+        UserRepositoryHashMap.counter = counter;
     }
 
     public UserDto update(UserDto userDto, Long userId) {

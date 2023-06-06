@@ -3,7 +3,6 @@ package ru.practicum.shareit.booking.controller;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.dto.BookingAllFieldsDto;
-import ru.practicum.shareit.booking.dto.BookingSavingDto;
 import ru.practicum.shareit.booking.service.BookingService;
 import ru.practicum.shareit.item.service.ItemService;
 
@@ -17,12 +16,12 @@ public class BookingController {
     private final BookingService bookingService;
     private final ItemService itemService;
 
-    @PostMapping()
-    public BookingAllFieldsDto save(@RequestHeader(value = HEADER_SHARER_USER_ID, required = false) Long userId,
-                                    @RequestBody BookingSavingDto bookingSavingDto) {
-        var item = itemService.get(bookingSavingDto.getItemId(), userId);
-        return bookingService.save(bookingSavingDto, item, userId);
-    }
+//    @PostMapping()
+//    public BookingAllFieldsDto save(@RequestHeader(value = HEADER_SHARER_USER_ID, required = false) Long userId,
+//                                    @RequestBody BookingSavingDto bookingSavingDto) {
+//        var item = itemService.get(bookingSavingDto.getItemId(), userId);
+//        return bookingService.save(bookingSavingDto, item, userId);
+//    }
 
     @PatchMapping("/{bookingId}")
     public BookingAllFieldsDto approve(@RequestHeader(value = HEADER_SHARER_USER_ID, required = false) Long userId,

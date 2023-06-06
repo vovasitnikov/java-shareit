@@ -22,16 +22,16 @@ import java.util.Map;
 public class ItemRepositoryHashMap {
 
     private static HashMap<Long, Item> itemsList = new HashMap<>();
-    private static long counter;
+    private static long counter = 0;
 
     public Item save(Item item) throws EmailException {
         long id;
         id = itemsList.keySet().stream().max(Long::compareTo).orElse(1L);
         if (itemsList.size() == 0) {
             item.setId(id);
-            counter++;
+            setCounter(1);
         } else {
-            counter++;
+            setCounter((int) counter + 1);
             if (counter > id) {
                 item.setId(counter);
             }
@@ -40,6 +40,11 @@ public class ItemRepositoryHashMap {
         log.info(itemsList.toString());
         return item;
     }
+
+    public static synchronized void setCounter(int counter) {
+        ItemRepositoryHashMap.counter = counter;
+    }
+
 
     public Item update(Item item) {
         itemsList.put(item.getId(), item);

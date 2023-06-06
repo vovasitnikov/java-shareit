@@ -7,8 +7,6 @@ import ru.practicum.shareit.booking.dto.BookingAllFieldsDto;
 import ru.practicum.shareit.booking.service.BookingService;
 import ru.practicum.shareit.error.NotFoundException;
 import ru.practicum.shareit.error.ValidationException;
-import ru.practicum.shareit.item.dto.CommentDto;
-import ru.practicum.shareit.item.dto.ItemAllFieldsDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.ItemRepositoryHashMap;
@@ -24,9 +22,6 @@ import static java.time.LocalDateTime.now;
 import static java.util.Collections.emptyList;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
-import static ru.practicum.shareit.booking.enums.BookingTimeState.PAST;
-import static ru.practicum.shareit.item.mapper.CommentMapper.mapToComment;
-import static ru.practicum.shareit.item.mapper.CommentMapper.mapToCommentDto;
 import static ru.practicum.shareit.item.mapper.ItemMapper.*;
 import static ru.practicum.shareit.user.mapper.UserMapper.mapToUser;
 
@@ -69,17 +64,6 @@ public class ItemServiceImpl implements ItemService {
         return mapToItemDto(save);
     }
 
-    @Override
-    public ItemAllFieldsDto get(Long id, Long userId) {
-        var item = itemRepositoryHashMap.findById(id);
-        if (item == null) new NotFoundException("Item with id#" + id + " does not exist");
-        var comments = getAllComments(id);
-        var bookings = bookingService.getBookingsByItem(item.getId(), userId);
-        return mapToItemAllFieldsDto(item,
-                getLastItem(bookings),
-                getNextItem(bookings),
-                comments);
-    }
 
     @Override
     public void delete(Long id) {
@@ -96,6 +80,11 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    public ItemDto get(Long userId, Long itemId) {
+        return mapToItemDto(itemRepositoryHashMap.findById(itemId));
+    }
+
+    @Override
     public List<ItemDto> search(String text, Long userId, Integer from, Integer size) {
         if (userId == null) throw new ValidationException("User ID cannot be null");
         if (text.isBlank()) return emptyList();
@@ -106,34 +95,6 @@ public class ItemServiceImpl implements ItemService {
         List<ItemDto> result = new ArrayList<>();
         items.forEach(i -> result.add(mapToItemDto(i)));
         return result;
-    }
-
-    @Override
-    public CommentDto saveComment(CommentDto commentDto,
-                                  Long itemId,
-                                  Long userId) throws NotFoundException {
-        if (commentDto.getText() == null || commentDto.getText().isBlank())
-            throw new ValidationException("Comment text cannot be blank");
-        var item = itemRepositoryHashMap.findById(itemId);
-        if (item == null) throw new NotFoundException("Item with id#" + itemId + " does not exist");
-        var user = mapToUser(userService.get(userId));
-        var bookings = bookingService.getAllBookings(userId, PAST.name());
-        if (bookings.isEmpty()) throw new ValidationException("User cannot make comments");
-        var comment = mapToComment(commentDto);
-        comment.setItem(item);
-        comment.setAuthor(user);
-        comment.setCreated(now());
-        return mapToCommentDto(null);
-    }
-
-    @Override
-    public List<CommentDto> getAllComments() {
-        return null;
-    }
-
-    @Override
-    public List<CommentDto> getAllComments(Long itemId) {
-        return null;
     }
 
     @Override

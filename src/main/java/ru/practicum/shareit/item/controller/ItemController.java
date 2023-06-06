@@ -3,8 +3,6 @@ package ru.practicum.shareit.item.controller;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.item.dto.CommentDto;
-import ru.practicum.shareit.item.dto.ItemAllFieldsDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.request.service.ItemRequestService;
@@ -41,9 +39,10 @@ public class ItemController {
     }
 
     @GetMapping("/{itemId}")
-    public ItemAllFieldsDto get(@RequestHeader(value = HEADER_SHARER_USER_ID, required = false) Long userId,
-                                @PathVariable Long itemId) {
-        return itemService.get(itemId, userId);
+    public ItemDto get(@RequestHeader(value = HEADER_SHARER_USER_ID, required = false) Long userId,
+                       @PathVariable Long itemId) {
+        log.info("itemId: " + itemId);
+        return itemService.get(userId, itemId);
     }
 
     @DeleteMapping("/{itemId}")
@@ -66,10 +65,10 @@ public class ItemController {
         return itemService.search(text, userId, from, size);
     }
 
-    @PostMapping("{itemId}/comment")
-    public CommentDto saveComment(@RequestHeader(value = HEADER_SHARER_USER_ID, required = false) Long userId,
-                                  @RequestBody CommentDto commentDto,
-                                  @PathVariable Long itemId) {
-        return itemService.saveComment(commentDto, itemId, userId);
-    }
+//    @PostMapping("{itemId}/comment")
+//    public CommentDto saveComment(@RequestHeader(value = HEADER_SHARER_USER_ID, required = false) Long userId,
+//                                  @RequestBody CommentDto commentDto,
+//                                  @PathVariable Long itemId) {
+//        return itemService.saveComment(commentDto, itemId, userId);
+//    }
 }
