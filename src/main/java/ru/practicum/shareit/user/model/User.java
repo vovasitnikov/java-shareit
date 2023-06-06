@@ -1,13 +1,10 @@
 package ru.practicum.shareit.user.model;
 
 import lombok.*;
-import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 
-import java.sql.SQLException;
 
 import static javax.persistence.GenerationType.*;
 
