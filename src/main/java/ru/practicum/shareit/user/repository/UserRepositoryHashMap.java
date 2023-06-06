@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.weaver.ast.Not;
 import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.error.EmailException;
 import ru.practicum.shareit.error.NotFoundException;

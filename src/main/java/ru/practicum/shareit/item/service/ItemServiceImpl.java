@@ -2,9 +2,7 @@ package ru.practicum.shareit.item.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.dto.BookingAllFieldsDto;
 import ru.practicum.shareit.booking.service.BookingService;
 import ru.practicum.shareit.error.NotFoundException;
@@ -12,36 +10,29 @@ import ru.practicum.shareit.error.ValidationException;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemAllFieldsDto;
 import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.mapper.CommentMapper;
-import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.ItemRepositoryHashMap;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.mapper.ItemRequestMapper;
 import ru.practicum.shareit.request.model.ItemRequest;
-import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 import static java.time.LocalDateTime.now;
 import static java.util.Collections.emptyList;
 import static java.util.Comparator.comparing;
-import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 import static ru.practicum.shareit.booking.enums.BookingTimeState.PAST;
 import static ru.practicum.shareit.item.mapper.CommentMapper.mapToComment;
 import static ru.practicum.shareit.item.mapper.CommentMapper.mapToCommentDto;
 import static ru.practicum.shareit.item.mapper.ItemMapper.*;
 import static ru.practicum.shareit.user.mapper.UserMapper.mapToUser;
-import static ru.practicum.shareit.utils.Pagination.makePageRequest;
 
 @Slf4j
 @Service
 @AllArgsConstructor
-//@Transactional(readOnly = true)
 public class ItemServiceImpl implements ItemService {
 
     private final ItemRepositoryHashMap itemRepositoryHashMap;
