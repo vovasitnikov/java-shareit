@@ -41,7 +41,7 @@ import static ru.practicum.shareit.utils.Pagination.makePageRequest;
 @Slf4j
 @Service
 @AllArgsConstructor
-///@Transactional(readOnly = true)
+
 public class ItemServiceImpl implements ItemService {
 
     private final ItemRepositoryHashMap itemRepositoryHashMap;
