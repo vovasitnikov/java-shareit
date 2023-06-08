@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.service.ItemService;
-import ru.practicum.shareit.request.service.ItemRequestService;
 
 import java.util.List;
 
@@ -15,7 +14,6 @@ import java.util.List;
 @Slf4j
 public class ItemController {
     private static final String HEADER_SHARER_USER_ID = "X-Sharer-User-Id";
-    private final ItemRequestService itemRequestService;
     private final ItemService itemService;
 
     @PostMapping()
@@ -24,10 +22,7 @@ public class ItemController {
         if (userId == null) {
             throw new RuntimeException("X-Sharer-User-Id not found");
         }
-        var itemRequestDto = itemDto.getRequestId() != null
-                ? itemRequestService.getItemRequestById(itemDto.getRequestId(), userId)
-                : null;
-        return itemService.save(itemDto, itemRequestDto, userId);
+        return itemService.save(itemDto, userId);
     }
 
     @PatchMapping("/{itemId}")
@@ -64,11 +59,4 @@ public class ItemController {
                                 @RequestParam(required = false) String text) {
         return itemService.search(text, userId, from, size);
     }
-
-//    @PostMapping("{itemId}/comment")
-//    public CommentDto saveComment(@RequestHeader(value = HEADER_SHARER_USER_ID, required = false) Long userId,
-//                                  @RequestBody CommentDto commentDto,
-//                                  @PathVariable Long itemId) {
-//        return itemService.saveComment(commentDto, itemId, userId);
-//    }
 }

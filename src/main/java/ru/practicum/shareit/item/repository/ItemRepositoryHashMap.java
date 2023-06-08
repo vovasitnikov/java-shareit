@@ -1,6 +1,5 @@
 package ru.practicum.shareit.item.repository;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -45,7 +44,6 @@ public class ItemRepositoryHashMap {
         ItemRepositoryHashMap.counter = counter;
     }
 
-
     public Item update(Item item) {
         itemsList.put(item.getId(), item);
         log.info(itemsList.toString());
@@ -67,5 +65,4 @@ public class ItemRepositoryHashMap {
         }
         return userDtoList;
     }
-
 }

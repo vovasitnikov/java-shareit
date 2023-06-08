@@ -3,24 +3,17 @@ package ru.practicum.shareit.item.service;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.practicum.shareit.booking.dto.BookingAllFieldsDto;
-import ru.practicum.shareit.booking.service.BookingService;
 import ru.practicum.shareit.error.NotFoundException;
 import ru.practicum.shareit.error.ValidationException;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.ItemRepositoryHashMap;
-import ru.practicum.shareit.request.dto.ItemRequestDto;
-import ru.practicum.shareit.request.mapper.ItemRequestMapper;
-import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.user.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.time.LocalDateTime.now;
 import static java.util.Collections.emptyList;
-import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 import static ru.practicum.shareit.item.mapper.ItemMapper.*;
 import static ru.practicum.shareit.user.mapper.UserMapper.mapToUser;
@@ -31,18 +24,14 @@ import static ru.practicum.shareit.user.mapper.UserMapper.mapToUser;
 public class ItemServiceImpl implements ItemService {
 
     private final ItemRepositoryHashMap itemRepositoryHashMap;
-    private final BookingService bookingService;
     private final UserService userService;
 
     @Override
-    public ItemDto save(ItemDto itemDto, ItemRequestDto itemRequestDto, Long userId) {
+    public ItemDto save(ItemDto itemDto,  Long userId) {
         validate(itemDto);
         var user = mapToUser(userService.get(userId));
         var item = mapToItem(itemDto);
         item.setOwner(user);
-        if (itemRequestDto != null)
-            item.setRequest(ItemRequestMapper.mapToItemRequest(
-                    itemRequestDto, userService.get(itemRequestDto.getRequesterId())));
         var save = itemRepositoryHashMap.save(item);
         return mapToItemDto(save);
     }
@@ -102,30 +91,6 @@ public class ItemServiceImpl implements ItemService {
         return null;
     }
 
-    @Override
-    public List<ItemDto> getItemsByRequests(List<ItemRequest> requests) {
-        return null;
-    }
-
-    private BookingAllFieldsDto getNextItem(List<BookingAllFieldsDto> bookings) {
-        if (bookings != null)
-            return bookings.stream()
-                    .filter(booking -> booking.getStart().isAfter(now()))
-                    .min(comparing(BookingAllFieldsDto::getEnd))
-                    .orElse(null);
-        else
-            return null;
-    }
-
-    private BookingAllFieldsDto getLastItem(List<BookingAllFieldsDto> bookings) {
-        if (bookings != null)
-            return bookings.stream()
-                    .filter(booking -> booking.getEnd().isBefore(now()))
-                    .max(comparing(BookingAllFieldsDto::getEnd))
-                    .orElse(null);
-        else
-            return null;
-    }
 
     private void validate(ItemDto item) {
         if (item.getName() == null || item.getName().isBlank())
