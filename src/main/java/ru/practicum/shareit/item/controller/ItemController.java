@@ -44,7 +44,6 @@ public class ItemController {
     public void delete(@PathVariable Long itemId) {
         log.info("method delete work");
         itemService.delete(itemId);
-        log.info("element with id " + itemId +" delete");
     }
 
     @GetMapping()
