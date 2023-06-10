@@ -74,7 +74,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> search(String text, Long userId, Integer from, Integer size) {
+    public List<ItemDto> search(String text, Long userId) {
         if (userId == null) throw new ValidationException("User ID cannot be null");
         if (text.isBlank()) return emptyList();
         List<Item> items = itemRepositoryHashMap.getAll()

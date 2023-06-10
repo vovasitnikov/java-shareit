@@ -1,6 +1,6 @@
 package ru.practicum.shareit.item.controller;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.dto.ItemDto;
@@ -9,7 +9,7 @@ import ru.practicum.shareit.item.service.ItemService;
 import java.util.List;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/items")
 @Slf4j
 public class ItemController {
@@ -17,46 +17,50 @@ public class ItemController {
     private final ItemService itemService;
 
     @PostMapping()
-    public ItemDto save(@RequestHeader(value = HEADER_SHARER_USER_ID, required = false) Long userId,
+    public ItemDto save(@RequestHeader(value = HEADER_SHARER_USER_ID) Long userId,
                         @RequestBody ItemDto itemDto) {
-        if (userId == null) {
-            throw new RuntimeException("X-Sharer-User-Id not found");
-        }
+        log.info("method save work");
         return itemService.save(itemDto, userId);
     }
 
     @PatchMapping("/{itemId}")
-    public ItemDto update(@RequestHeader(value = HEADER_SHARER_USER_ID, required = false) Long userId,
+    public ItemDto update(@RequestHeader(value = HEADER_SHARER_USER_ID) Long userId,
                           @RequestBody ItemDto itemDto,
                           @PathVariable Long itemId) {
+        log.info("method update work");
         itemDto.setId(itemId);
         return itemService.update(itemDto, userId);
     }
 
     @GetMapping("/{itemId}")
-    public ItemDto get(@RequestHeader(value = HEADER_SHARER_USER_ID, required = false) Long userId,
+    public ItemDto get(@RequestHeader(value = HEADER_SHARER_USER_ID) Long userId,
                        @PathVariable Long itemId) {
+        log.info("method get work");
         log.info("itemId: " + itemId);
         return itemService.get(userId, itemId);
     }
 
     @DeleteMapping("/{itemId}")
     public void delete(@PathVariable Long itemId) {
+        log.info("method delete work");
         itemService.delete(itemId);
+        log.info("element with id " + itemId +" delete");
     }
 
     @GetMapping()
-    public List<ItemDto> getAllItems(@RequestHeader(value = HEADER_SHARER_USER_ID, required = false) Long userId,
+    public List<ItemDto> getAllItems(@RequestHeader(value = HEADER_SHARER_USER_ID) Long userId,
                                      @RequestParam(required = false) Integer from,
                                      @RequestParam(required = false) Integer size) {
+        log.info("method getAllItems work");
         return itemService.getAllItems(userId, from, size);
     }
 
     @GetMapping("/search")
-    public List<ItemDto> search(@RequestHeader(value = HEADER_SHARER_USER_ID, required = false) Long userId,
+    public List<ItemDto> search(@RequestHeader(value = HEADER_SHARER_USER_ID) Long userId,
                                 @RequestParam(required = false) Integer from,
                                 @RequestParam(required = false) Integer size,
                                 @RequestParam(required = false) String text) {
-        return itemService.search(text, userId, from, size);
+        log.info("method search work");
+        return itemService.search(text, userId);
     }
 }
