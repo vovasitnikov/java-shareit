@@ -39,6 +39,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDto update(ItemDto itemDto, Long userId) {
         if (userId == null) throw new ValidationException("User ID cannot be null");
+        if (itemDto == null) throw new ValidationException("User cannot be null");
         var item = itemRepositoryHashMap.findById(itemDto.getId());
         if (item == null) throw new NotFoundException("Item with id#" + itemDto.getId() + " does not exist");
         if (!item.getOwner().getId().equals(userId))
@@ -79,7 +80,8 @@ public class ItemServiceImpl implements ItemService {
         if (text.isBlank()) return emptyList();
         List<Item> items = itemRepositoryHashMap.getAll()
                 .stream()
-                .filter(item -> item.getDescription().toLowerCase().contains(text.toLowerCase()) && item.getAvailable())
+                .filter(item -> item.getDescription().toLowerCase().contains(text.toLowerCase()) && item.getAvailable()
+                              | item.getName().toLowerCase().contains(text.toLowerCase()) && item.getAvailable())
                 .collect(toList());
         List<ItemDto> result = new ArrayList<>();
         items.forEach(i -> result.add(mapToItemDto(i)));

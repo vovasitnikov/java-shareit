@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
-import ru.practicum.shareit.error.EmailException;
 import ru.practicum.shareit.item.model.Item;
 
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ public class ItemRepositoryHashMap {
     private static HashMap<Long, Item> itemsList = new HashMap<>();
     private static long counter = 0;
 
-    public Item save(Item item) throws EmailException {
+    public Item save(Item item)  {
         long id;
         id = itemsList.keySet().stream().max(Long::compareTo).orElse(1L);
         if (itemsList.size() == 0) {
