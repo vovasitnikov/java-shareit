@@ -51,5 +51,7 @@ public class UserServiceImpl implements UserService {
             throw new ValidationException("Name cannot be empty.");
         if (userDto.getEmail().isBlank() || !userDto.getEmail().contains("@"))
             throw new ValidationException("Incorrect email: " + userDto.getEmail() + ".");
+        if (userDto.getName().isBlank())
+            throw new ValidationException("Incorrect name: " + userDto.getName() + ".");
     }
 }

@@ -47,19 +47,14 @@ public class ItemController {
     }
 
     @GetMapping()
-    public List<ItemDto> getAllItems(@RequestHeader(value = HEADER_SHARER_USER_ID) Long userId,
-                                     @RequestParam(required = false) Integer from,
-                                     @RequestParam(required = false) Integer size) {
+    public List<ItemDto> getAllItems(@RequestHeader(value = HEADER_SHARER_USER_ID) Long userId) {
         log.info("method getAllItems work");
-        return itemService.getAllItems(userId, from, size);
+        return itemService.getAllItems(userId);
     }
 
     @GetMapping("/search")
-    public List<ItemDto> search(@RequestHeader(value = HEADER_SHARER_USER_ID) Long userId,
-                                @RequestParam(required = false) Integer from,
-                                @RequestParam(required = false) Integer size,
-                                @RequestParam(required = false) String text) {
+    public List<ItemDto> search(@RequestParam(required = false) String text) {
         log.info("method search work");
-        return itemService.search(text, userId);
+        return itemService.search(text);
     }
 }

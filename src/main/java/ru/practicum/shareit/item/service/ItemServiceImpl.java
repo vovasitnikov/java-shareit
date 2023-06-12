@@ -8,6 +8,7 @@ import ru.practicum.shareit.error.ValidationException;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.ItemRepositoryHashMap;
+import ru.practicum.shareit.user.repository.UserRepositoryHashMap;
 import ru.practicum.shareit.user.service.UserService;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ import static ru.practicum.shareit.user.mapper.UserMapper.mapToUser;
 public class ItemServiceImpl implements ItemService {
 
     private final ItemRepositoryHashMap itemRepositoryHashMap;
+    private final UserRepositoryHashMap userRepositoryHashMap;
     private final UserService userService;
 
     @Override
@@ -39,7 +41,10 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDto update(ItemDto itemDto, Long userId) {
         if (userId == null) throw new ValidationException("User ID cannot be null");
-        if (itemDto == null) throw new ValidationException("User cannot be null");
+
+        var user = userRepositoryHashMap.get(userId);
+        if (user == null) throw new NotFoundException("User with id#" + userId + " does not exist");
+
         var item = itemRepositoryHashMap.findById(itemDto.getId());
         if (item == null) throw new NotFoundException("Item with id#" + itemDto.getId() + " does not exist");
         if (!item.getOwner().getId().equals(userId))
@@ -61,7 +66,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> getAllItems(Long userId, Integer from, Integer size) {
+    public List<ItemDto> getAllItems(Long userId) {
         if (userId == null) throw new ValidationException("User ID cannot be null");
         List<Item> items = itemRepositoryHashMap.getAll().stream().filter(item -> item.getOwner().getId().equals(userId)).collect(toList());
         List<ItemDto> result = new ArrayList<>();
@@ -75,8 +80,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> search(String text, Long userId) {
-        if (userId == null) throw new ValidationException("User ID cannot be null");
+    public List<ItemDto> search(String text) {
         if (text.isBlank()) return emptyList();
         List<Item> items = itemRepositoryHashMap.getAll()
                 .stream()
