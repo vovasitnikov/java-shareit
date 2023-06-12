@@ -9,7 +9,6 @@ import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.ItemRepositoryHashMap;
 import ru.practicum.shareit.user.repository.UserRepositoryHashMap;
-import ru.practicum.shareit.user.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,12 +25,11 @@ public class ItemServiceImpl implements ItemService {
 
     private final ItemRepositoryHashMap itemRepositoryHashMap;
     private final UserRepositoryHashMap userRepositoryHashMap;
-    private final UserService userService;
 
     @Override
     public ItemDto save(ItemDto itemDto,  Long userId) {
         validate(itemDto);
-        var user = mapToUser(userService.get(userId));
+        var user = mapToUser(userRepositoryHashMap.get(userId));
         var item = mapToItem(itemDto);
         item.setOwner(user);
         var save = itemRepositoryHashMap.save(item);
