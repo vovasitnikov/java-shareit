@@ -84,8 +84,9 @@ public class ItemServiceImpl implements ItemService {
         if (text.isBlank()) return emptyList();
         List<Item> items = itemRepositoryHashMap.getAll()
                 .stream()
-                .filter(item -> item.getDescription().toLowerCase().contains(text.toLowerCase()) && item.getAvailable())
-                              //| item.getName().toLowerCase().contains(text.toLowerCase()) && item.getAvailable())
+                .filter(item -> item.getAvailable() &&
+                                item.getDescription().toLowerCase().contains(text.toLowerCase())
+                                        | item.getName().toLowerCase().contains(text.toLowerCase()))
                 .collect(toList());
         List<ItemDto> result = new ArrayList<>();
         items.forEach(i -> result.add(mapToItemDto(i)));
