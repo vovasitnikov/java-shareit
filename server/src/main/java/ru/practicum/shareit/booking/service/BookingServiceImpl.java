@@ -30,6 +30,10 @@ import static ru.practicum.shareit.utils.Pagination.*;
 import static java.util.stream.Collectors.*;
 import static java.time.LocalDateTime.*;
 
+/**
+ * @author Oleg Khilko
+ */
+
 @Slf4j
 @Service
 @AllArgsConstructor

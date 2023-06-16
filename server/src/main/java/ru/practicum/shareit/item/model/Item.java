@@ -8,6 +8,10 @@ import javax.persistence.*;
 
 import static javax.persistence.GenerationType.*;
 
+/**
+ * @author Oleg Khilko
+ */
+
 @Entity
 @Getter
 @Setter

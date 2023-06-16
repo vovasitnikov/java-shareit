@@ -1,6 +1,7 @@
 package ru.practicum.shareit.item.service;
 
 import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.shareit.booking.enums.BookingState;
 import ru.practicum.shareit.item.repository.CommentRepository;
 import ru.practicum.shareit.request.mapper.ItemRequestMapper;
 import ru.practicum.shareit.booking.dto.BookingAllFieldsDto;
@@ -35,6 +36,9 @@ import static java.time.LocalDateTime.*;
 import static java.util.Collections.*;
 import static java.util.Comparator.*;
 
+/**
+ * @author Oleg Khilko
+ */
 
 @Slf4j
 @Service
@@ -186,6 +190,7 @@ public class ItemServiceImpl implements ItemService {
         if (bookings != null)
             return bookings.stream()
                     .filter(booking -> booking.getStart().isAfter(now()))
+                    .filter(booking -> !booking.getStatus().equals(BookingState.REJECTED.name()))
                     .min(comparing(BookingAllFieldsDto::getEnd))
                     .orElse(null);
         else
@@ -195,7 +200,7 @@ public class ItemServiceImpl implements ItemService {
     private BookingAllFieldsDto getLastItem(List<BookingAllFieldsDto> bookings) {
         if (bookings != null)
             return bookings.stream()
-                    .filter(booking -> booking.getEnd().isBefore(now()))
+                    .filter(booking -> booking.getEnd().minusHours(1).isBefore(now()))
                     .max(comparing(BookingAllFieldsDto::getEnd))
                     .orElse(null);
         else

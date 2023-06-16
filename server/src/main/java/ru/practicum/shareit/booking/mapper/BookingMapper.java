@@ -6,6 +6,10 @@ import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.booking.model.Booking;
 
+/**
+ * @author Oleg Khilko
+ */
+
 public class BookingMapper {
     public static Booking mapToBooking(BookingSavingDto bookingDto) {
         return Booking.builder()

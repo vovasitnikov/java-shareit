@@ -11,6 +11,10 @@ import javax.persistence.*;
 import static javax.persistence.GenerationType.*;
 import static javax.persistence.EnumType.*;
 
+/**
+ * @author Oleg Khilko
+ */
+
 @Entity
 @Getter
 @Setter

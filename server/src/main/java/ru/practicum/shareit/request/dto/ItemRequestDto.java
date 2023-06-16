@@ -9,6 +9,10 @@ import lombok.Data;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * @author Oleg Khilko
+ */
+
 @Data
 @Builder
 @NoArgsConstructor

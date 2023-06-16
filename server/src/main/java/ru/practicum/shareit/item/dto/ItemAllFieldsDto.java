@@ -5,6 +5,9 @@ import lombok.*;
 
 import java.util.List;
 
+/**
+ * @author Oleg Khilko
+ */
 
 @Data
 @NoArgsConstructor

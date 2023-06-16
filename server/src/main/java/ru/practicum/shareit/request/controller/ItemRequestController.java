@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 
 import java.util.List;
 
+/**
+ * @author Oleg Khilko
+ */
 
 @RestController
 @AllArgsConstructor

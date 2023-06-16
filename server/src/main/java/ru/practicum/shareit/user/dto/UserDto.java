@@ -4,6 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+/**
+ * @author Oleg Khilko
+ */
+
 @Data
 @Builder
 @AllArgsConstructor

@@ -4,6 +4,10 @@ import ru.practicum.shareit.request.dto.ItemRequestDto;
 
 import java.util.List;
 
+/**
+ * @author Oleg Khilko
+ */
+
 public interface ItemRequestService {
     List<ItemRequestDto> getAllItemRequests(Integer from, Integer size, Long userId);
 

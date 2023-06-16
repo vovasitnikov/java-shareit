@@ -6,6 +6,10 @@ import ru.practicum.shareit.item.dto.ItemAllFieldsDto;
 
 import java.util.List;
 
+/**
+ * @author Oleg Khilko
+ */
+
 public interface BookingService {
 
     List<BookingAllFieldsDto> getBookingsByOwnerId(Long userId, String state, Integer from, Integer size);
