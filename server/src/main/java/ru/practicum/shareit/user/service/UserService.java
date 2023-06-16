@@ -4,9 +4,6 @@ import ru.practicum.shareit.user.dto.UserDto;
 
 import java.util.List;
 
-/**
- * @author Oleg Khilko
- */
 
 public interface UserService {
     UserDto save(UserDto userDto);

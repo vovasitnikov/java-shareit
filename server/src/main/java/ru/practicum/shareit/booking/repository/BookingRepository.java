@@ -10,9 +10,6 @@ import ru.practicum.shareit.user.model.User;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * @author Oleg Khilko
- */
 
 public interface BookingRepository extends JpaRepository<Booking, Long> {
     //for owner

@@ -18,9 +18,6 @@ import java.util.List;
 import static ru.practicum.shareit.user.mapper.UserMapper.*;
 import static java.util.stream.Collectors.*;
 
-/**
- * @author Oleg Khilko
- */
 
 @Slf4j
 @Service

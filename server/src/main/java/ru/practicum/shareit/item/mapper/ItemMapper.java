@@ -9,9 +9,6 @@ import ru.practicum.shareit.item.model.Item;
 
 import java.util.List;
 
-/**
- * @author Oleg Khilko
- */
 
 public class ItemMapper {
     public static Item mapToItem(ItemDto itemDto) {

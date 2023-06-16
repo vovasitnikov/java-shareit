@@ -3,9 +3,6 @@ package ru.practicum.shareit.item.mapper;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.model.Comment;
 
-/**
- * @author Oleg Khilko
- */
 
 public class CommentMapper {
     public static Comment mapToComment(CommentDto commentDto) {

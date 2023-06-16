@@ -7,9 +7,6 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-/**
- * @author Oleg Khilko
- */
 
 @RestController
 @RequiredArgsConstructor

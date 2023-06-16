@@ -8,9 +8,6 @@ import ru.practicum.shareit.item.dto.ItemDto;
 
 import java.util.List;
 
-/**
- * @author Oleg Khilko
- */
 
 public interface ItemService {
     List<ItemAllFieldsDto> getAllItems(Long userId, Integer from, Integer size);

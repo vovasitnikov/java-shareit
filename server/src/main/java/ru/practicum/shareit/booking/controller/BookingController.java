@@ -1,6 +1,5 @@
 package ru.practicum.shareit.booking.controller;
 
-import lombok.extern.slf4j.Slf4j;
 import ru.practicum.shareit.booking.dto.BookingAllFieldsDto;
 import ru.practicum.shareit.booking.service.BookingService;
 import ru.practicum.shareit.booking.dto.BookingSavingDto;
@@ -10,9 +9,6 @@ import lombok.AllArgsConstructor;
 
 import java.util.List;
 
-/**
- * @author Oleg Khilko
- */
 
 @RestController
 @AllArgsConstructor

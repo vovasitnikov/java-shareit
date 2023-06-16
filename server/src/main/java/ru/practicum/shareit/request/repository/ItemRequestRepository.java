@@ -8,10 +8,6 @@ import ru.practicum.shareit.user.model.User;
 
 import java.util.List;
 
-/**
- * @author Oleg Khilko
- */
-
 public interface ItemRequestRepository extends JpaRepository<ItemRequest, Long> {
 
     Page<ItemRequest> findItemRequestByRequester_IdIsNotOrderByCreatedDesc(Long userId, Pageable pageable);
