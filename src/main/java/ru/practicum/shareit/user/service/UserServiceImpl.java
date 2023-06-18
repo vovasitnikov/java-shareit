@@ -12,9 +12,7 @@ import ru.practicum.shareit.error.ValidationException;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.repository.UserRepository;
-
 import java.util.List;
-
 import static java.util.stream.Collectors.toList;
 import static ru.practicum.shareit.user.mapper.UserMapper.mapToUser;
 import static ru.practicum.shareit.user.mapper.UserMapper.mapToUserDto;

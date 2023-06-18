@@ -1,60 +1,71 @@
 package ru.practicum.shareit.item.controller;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.shareit.item.dto.CommentDto;
+import ru.practicum.shareit.item.dto.ItemAllFieldsDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.service.ItemService;
+import ru.practicum.shareit.request.service.ItemRequestService;
 
 import java.util.List;
 
+
 @RestController
-@RequiredArgsConstructor
+@AllArgsConstructor
 @RequestMapping("/items")
-@Slf4j
 public class ItemController {
     private static final String HEADER_SHARER_USER_ID = "X-Sharer-User-Id";
+    private final ItemRequestService itemRequestService;
     private final ItemService itemService;
 
     @PostMapping()
-    public ItemDto save(@RequestHeader(value = HEADER_SHARER_USER_ID) Long userId,
+    public ItemDto save(@RequestHeader(value = HEADER_SHARER_USER_ID, required = false) Long userId,
                         @RequestBody ItemDto itemDto) {
-        log.info("method save work");
-        return itemService.save(itemDto, userId);
+        var itemRequestDto = itemDto.getRequestId() != null
+                ? itemRequestService.getItemRequestById(itemDto.getRequestId(), userId)
+                : null;
+        return itemService.save(itemDto, itemRequestDto, userId);
     }
 
     @PatchMapping("/{itemId}")
-    public ItemDto update(@RequestHeader(value = HEADER_SHARER_USER_ID) Long userId,
+    public ItemDto update(@RequestHeader(value = HEADER_SHARER_USER_ID, required = false) Long userId,
                           @RequestBody ItemDto itemDto,
                           @PathVariable Long itemId) {
-        log.info("method update work");
         itemDto.setId(itemId);
         return itemService.update(itemDto, userId);
     }
 
     @GetMapping("/{itemId}")
-    public ItemDto get(@RequestHeader(value = HEADER_SHARER_USER_ID) Long userId,
-                       @PathVariable Long itemId) {
-        log.info("method get work");
-        log.info("itemId: " + itemId);
-        return itemService.get(userId, itemId);
+    public ItemAllFieldsDto get(@RequestHeader(value = HEADER_SHARER_USER_ID, required = false) Long userId,
+                                @PathVariable Long itemId) {
+        return itemService.get(itemId, userId);
     }
 
     @DeleteMapping("/{itemId}")
     public void delete(@PathVariable Long itemId) {
-        log.info("method delete work");
         itemService.delete(itemId);
     }
 
     @GetMapping()
-    public List<ItemDto> getAllItems(@RequestHeader(value = HEADER_SHARER_USER_ID) Long userId) {
-        log.info("method getAllItems work");
-        return itemService.getAllItems(userId);
+    public List<ItemAllFieldsDto> getAllItems(@RequestHeader(value = HEADER_SHARER_USER_ID, required = false) Long userId,
+                                              @RequestParam(required = false) Integer from,
+                                              @RequestParam(required = false) Integer size) {
+        return itemService.getAllItems(userId, from, size);
     }
 
     @GetMapping("/search")
-    public List<ItemDto> search(@RequestParam(required = false) String text) {
-        log.info("method search work");
-        return itemService.search(text);
+    public List<ItemDto> search(@RequestHeader(value = HEADER_SHARER_USER_ID, required = false) Long userId,
+                                @RequestParam(required = false) Integer from,
+                                @RequestParam(required = false) Integer size,
+                                @RequestParam(required = false) String text) {
+        return itemService.search(text, userId, from, size);
+    }
+
+    @PostMapping("{itemId}/comment")
+    public CommentDto saveComment(@RequestHeader(value = HEADER_SHARER_USER_ID, required = false) Long userId,
+                                  @RequestBody CommentDto commentDto,
+                                  @PathVariable Long itemId) {
+        return itemService.saveComment(commentDto, itemId, userId);
     }
 }
