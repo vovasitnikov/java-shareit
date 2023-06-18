@@ -7,11 +7,11 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
+
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "/users")
+@RequestMapping("/users")
 public class UserController {
-
     private final UserService userService;
 
     @PostMapping()
@@ -40,3 +40,4 @@ public class UserController {
         return userService.getAll();
     }
 }
+

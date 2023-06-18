@@ -4,8 +4,8 @@ import ru.practicum.shareit.user.dto.UserDto;
 
 import java.util.List;
 
-public interface UserService {
 
+public interface UserService {
     UserDto save(UserDto userDto);
 
     UserDto update(UserDto userDto, Long userId);
