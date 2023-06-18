@@ -1,9 +1,10 @@
 package ru.practicum.shareit.user.model;
 
-import jakarta.persistence.*;
 import lombok.*;
 
-import static jakarta.persistence.GenerationType.IDENTITY;
+import javax.persistence.*;
+
+import static javax.persistence.GenerationType.IDENTITY;
 
 
 @Entity

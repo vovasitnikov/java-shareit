@@ -1,13 +1,12 @@
 package ru.practicum.shareit.item.model;
 
-import jakarta.persistence.*;
 import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.user.model.User;
 import lombok.*;
 
-import static jakarta.persistence.GenerationType.IDENTITY;
+import javax.persistence.*;
 
-
+import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Getter
