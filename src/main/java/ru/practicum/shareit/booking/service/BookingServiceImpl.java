@@ -41,8 +41,9 @@ import static ru.practicum.shareit.utils.Pagination.*;
 @Transactional(readOnly = true)
 public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepository;
-    private final UserRepository userRepository;
 
+    private final UserRepository userRepository;
+    private final UserService userService;
 
     //достанем юзверя из репозитория
     public UserDto get(Long userId) {
@@ -113,7 +114,8 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<BookingAllFieldsDto> getAllBookings(Long bookerId, String state) {
         Stream<Booking> stream = null;
-        var userDto = get(bookerId);
+        var userDto = userService.get(bookerId);
+
         var user = mapToUser(userDto);
         if (state == null || ALL.name().equals(state))
             stream = bookingRepository
