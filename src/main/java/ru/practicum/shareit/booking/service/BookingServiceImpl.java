@@ -54,8 +54,6 @@ public class BookingServiceImpl implements BookingService {
                 item.getId(),
                 APPROVED,
                 bookingSavingDto.getStart());
-//        if (!bookings.isEmpty())
-//            throw new NotFoundException("This item cannot be booked: " + item.getName());
         var booking = mapToBooking(bookingSavingDto);
         booking.setStatus(WAITING);
         booking.setBooker(booker);
