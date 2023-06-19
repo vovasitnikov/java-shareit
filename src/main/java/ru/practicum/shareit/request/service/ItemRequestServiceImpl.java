@@ -13,7 +13,6 @@ import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.request.repository.ItemRequestRepository;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.repository.UserRepository;
-import ru.practicum.shareit.user.service.UserService;
 
 import java.util.List;
 
@@ -32,9 +31,7 @@ import static ru.practicum.shareit.utils.Pagination.*;
 @AllArgsConstructor
 public class ItemRequestServiceImpl implements ItemRequestService {
     private final ItemRequestRepository itemRequestRepository;
-
     private final UserRepository userRepository;
-    private final UserService userService;
     private final ItemService itemService;
 
 
@@ -49,7 +46,6 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     @Override
     public ItemRequestDto save(ItemRequestDto itemRequestDto, Long requesterId) {
         validate(itemRequestDto);
-        //var userDto = userService.get(requesterId);
         var userDto = get(requesterId);
         var user = mapToUser(userDto);
         var itemRequest = mapToItemRequest(itemRequestDto);
@@ -81,7 +77,6 @@ public class ItemRequestServiceImpl implements ItemRequestService {
 
     @Override
     public List<ItemRequestDto> getAllItemRequests(Long userId) {
-        //var userDto = userService.get(userId);
         var userDto = get(userId);
         var user = mapToUser(userDto);
         var itemRequests = itemRequestRepository.findItemRequestByRequesterOrderByCreatedDesc(user);
@@ -95,7 +90,6 @@ public class ItemRequestServiceImpl implements ItemRequestService {
 
     @Override
     public ItemRequestDto getItemRequestById(long requestId, Long userId) {
-        //mapToUser(userService.get(userId));
         mapToUser(get(userId));
         var items = itemService.getItemsByRequestId(requestId);
         var itemRequest = itemRequestRepository.findById(requestId).orElseThrow(
