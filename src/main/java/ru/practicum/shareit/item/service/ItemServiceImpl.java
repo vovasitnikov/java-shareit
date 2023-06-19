@@ -21,6 +21,8 @@ import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.mapper.ItemRequestMapper;
 import ru.practicum.shareit.request.model.ItemRequest;
+import ru.practicum.shareit.user.dto.UserDto;
+import ru.practicum.shareit.user.repository.UserRepository;
 import ru.practicum.shareit.user.service.UserService;
 
 import java.util.List;
@@ -36,6 +38,7 @@ import static ru.practicum.shareit.item.mapper.CommentMapper.mapToComment;
 import static ru.practicum.shareit.item.mapper.CommentMapper.mapToCommentDto;
 import static ru.practicum.shareit.item.mapper.ItemMapper.*;
 import static ru.practicum.shareit.user.mapper.UserMapper.mapToUser;
+import static ru.practicum.shareit.user.mapper.UserMapper.mapToUserDto;
 import static ru.practicum.shareit.utils.Pagination.*;
 
 
@@ -48,17 +51,28 @@ public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
     private final BookingService bookingService;
     private final UserService userService;
+    private final UserRepository userRepository;
+
+
+    //достанем юзверя из репозитория
+    public UserDto get(Long userId) {
+        if (userId == null) throw new ValidationException("User ID cannot be null.");
+        var user = userRepository.findById(userId).orElseThrow(() -> {
+            throw new NotFoundException("User with ID #" + userId + " does not exist.");
+        });
+        return mapToUserDto(user);
+    }
 
     @Override
     @Transactional
     public ItemDto save(ItemDto itemDto, ItemRequestDto itemRequestDto, Long userId) {
         validate(itemDto);
-        var user = mapToUser(userService.get(userId));
+        var user = mapToUser(get(userId));
         var item = mapToItem(itemDto);
         item.setOwner(user);
         if (itemRequestDto != null)
             item.setRequest(ItemRequestMapper.mapToItemRequest(
-                    itemRequestDto, userService.get(itemRequestDto.getRequesterId())));
+                    itemRequestDto, get(itemRequestDto.getRequesterId())));
         var save = itemRepository.save(item);
         return mapToItemDto(save);
     }
@@ -142,7 +156,7 @@ public class ItemServiceImpl implements ItemService {
             throw new ValidationException("Comment text cannot be blank");
         var item = itemRepository.findById(itemId).orElseThrow(
                 () -> new NotFoundException("Item with id#" + itemId + " does not exist"));
-        var user = mapToUser(userService.get(userId));
+        var user = mapToUser(get(userId));
         var bookings = bookingService.getAllBookings(userId, PAST.name());
         if (bookings.isEmpty()) throw new ValidationException("User cannot make comments");
         var comment = mapToComment(commentDto);
