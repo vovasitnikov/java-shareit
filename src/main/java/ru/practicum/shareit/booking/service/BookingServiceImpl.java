@@ -41,9 +41,8 @@ import static ru.practicum.shareit.utils.Pagination.*;
 @Transactional(readOnly = true)
 public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepository;
-
     private final UserRepository userRepository;
-    private final UserService userService;
+
 
     //достанем юзверя из репозитория
     public UserDto get(Long userId) {
@@ -114,7 +113,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<BookingAllFieldsDto> getAllBookings(Long bookerId, String state) {
         Stream<Booking> stream = null;
-        var userDto = userService.get(bookerId);
+        var userDto = get(bookerId);
         var user = mapToUser(userDto);
         if (state == null || ALL.name().equals(state))
             stream = bookingRepository
@@ -148,7 +147,6 @@ public class BookingServiceImpl implements BookingService {
     public List<BookingAllFieldsDto> getAllBookings(Long bookerId, String state, Integer from, Integer size) {
         Stream<Booking> stream = null;
         var pageRequest = makePageRequest(from, size, Sort.by("start").descending());
-        //var userDto = userService.get(bookerId);
         var userDto = get(bookerId);
         var user = mapToUser(userDto);
         if (state == null || ALL.name().equals(state)) {
@@ -212,7 +210,6 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<BookingAllFieldsDto> getBookingsByOwnerId(Long userId, String state) {
         Stream<Booking> stream = null;
-        //var userDto = userService.get(userId);
         var userDto = get(userId);
         var user = mapToUser(userDto);
         if (state == null || ALL.name().equals(state))
@@ -246,7 +243,6 @@ public class BookingServiceImpl implements BookingService {
     public List<BookingAllFieldsDto> getBookingsByOwnerId(Long userId, String state, Integer from, Integer size) {
         Stream<Booking> stream = null;
         var pageRequest = makePageRequest(from, size, Sort.by("start").descending());
-        //var user = mapToUser(userService.get(userId));
         var user = mapToUser(get(userId));
         if (state == null || state.equals(ALL.name())) {
             if (pageRequest == null)
