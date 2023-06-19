@@ -114,7 +114,6 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<BookingAllFieldsDto> getAllBookings(Long bookerId, String state) {
         Stream<Booking> stream = null;
-        //var userDto = userService.get(bookerId);
         var userDto = get(bookerId);
         var user = mapToUser(userDto);
         if (state == null || ALL.name().equals(state))

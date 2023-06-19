@@ -11,6 +11,8 @@ import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.request.repository.ItemRequestRepository;
+import ru.practicum.shareit.user.dto.UserDto;
+import ru.practicum.shareit.user.repository.UserRepository;
 import ru.practicum.shareit.user.service.UserService;
 
 import java.util.List;
@@ -21,6 +23,7 @@ import static java.util.stream.Collectors.toList;
 import static ru.practicum.shareit.request.mapper.ItemRequestMapper.mapToItemRequest;
 import static ru.practicum.shareit.request.mapper.ItemRequestMapper.mapToItemRequestDto;
 import static ru.practicum.shareit.user.mapper.UserMapper.mapToUser;
+import static ru.practicum.shareit.user.mapper.UserMapper.mapToUserDto;
 import static ru.practicum.shareit.utils.Pagination.*;
 
 
@@ -29,13 +32,25 @@ import static ru.practicum.shareit.utils.Pagination.*;
 @AllArgsConstructor
 public class ItemRequestServiceImpl implements ItemRequestService {
     private final ItemRequestRepository itemRequestRepository;
+
+    private final UserRepository userRepository;
     private final UserService userService;
     private final ItemService itemService;
+
+
+    public UserDto get(Long userId) {
+        if (userId == null) throw new ValidationException("User ID cannot be null.");
+        var user = userRepository.findById(userId).orElseThrow(() -> {
+            throw new NotFoundException("User with ID #" + userId + " does not exist.");
+        });
+        return mapToUserDto(user);
+    }
 
     @Override
     public ItemRequestDto save(ItemRequestDto itemRequestDto, Long requesterId) {
         validate(itemRequestDto);
-        var userDto = userService.get(requesterId);
+        //var userDto = userService.get(requesterId);
+        var userDto = get(requesterId);
         var user = mapToUser(userDto);
         var itemRequest = mapToItemRequest(itemRequestDto);
         itemRequest.setRequester(user);
@@ -66,7 +81,8 @@ public class ItemRequestServiceImpl implements ItemRequestService {
 
     @Override
     public List<ItemRequestDto> getAllItemRequests(Long userId) {
-        var userDto = userService.get(userId);
+        //var userDto = userService.get(userId);
+        var userDto = get(userId);
         var user = mapToUser(userDto);
         var itemRequests = itemRequestRepository.findItemRequestByRequesterOrderByCreatedDesc(user);
         var items = itemService.getItemsByRequests(itemRequests)
@@ -79,7 +95,8 @@ public class ItemRequestServiceImpl implements ItemRequestService {
 
     @Override
     public ItemRequestDto getItemRequestById(long requestId, Long userId) {
-        mapToUser(userService.get(userId));
+        //mapToUser(userService.get(userId));
+        mapToUser(get(userId));
         var items = itemService.getItemsByRequestId(requestId);
         var itemRequest = itemRequestRepository.findById(requestId).orElseThrow(
                 () -> new NotFoundException("Request with ID#" + requestId + " does not exist"));
