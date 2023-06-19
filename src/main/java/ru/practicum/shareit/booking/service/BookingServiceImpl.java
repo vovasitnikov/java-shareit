@@ -62,7 +62,6 @@ public class BookingServiceImpl implements BookingService {
         if (!itemDto.getAvailable())
             throw new ValidationException("Item with id#" + itemDto.getId() + " cannot be booked");
         validate(bookingSavingDto);
-        //var booker = mapToUser(userService.get(bookerId));
         var booker = mapToUser(get(bookerId));
         var item = mapToItem(itemDto);
         var bookings = bookingRepository.findBookingsByItem_IdIsAndStatusIsAndEndIsAfter(
@@ -149,7 +148,8 @@ public class BookingServiceImpl implements BookingService {
     public List<BookingAllFieldsDto> getAllBookings(Long bookerId, String state, Integer from, Integer size) {
         Stream<Booking> stream = null;
         var pageRequest = makePageRequest(from, size, Sort.by("start").descending());
-        var userDto = userService.get(bookerId);
+        //var userDto = userService.get(bookerId);
+        var userDto = get(bookerId);
         var user = mapToUser(userDto);
         if (state == null || ALL.name().equals(state)) {
             if (pageRequest == null)
@@ -212,7 +212,8 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<BookingAllFieldsDto> getBookingsByOwnerId(Long userId, String state) {
         Stream<Booking> stream = null;
-        var userDto = userService.get(userId);
+        //var userDto = userService.get(userId);
+        var userDto = get(userId);
         var user = mapToUser(userDto);
         if (state == null || ALL.name().equals(state))
             stream = bookingRepository.findBookingsByItemOwnerIsOrderByStartDesc(user)
@@ -245,7 +246,8 @@ public class BookingServiceImpl implements BookingService {
     public List<BookingAllFieldsDto> getBookingsByOwnerId(Long userId, String state, Integer from, Integer size) {
         Stream<Booking> stream = null;
         var pageRequest = makePageRequest(from, size, Sort.by("start").descending());
-        var user = mapToUser(userService.get(userId));
+        //var user = mapToUser(userService.get(userId));
+        var user = mapToUser(get(userId));
         if (state == null || state.equals(ALL.name())) {
             if (pageRequest == null)
                 stream = bookingRepository
