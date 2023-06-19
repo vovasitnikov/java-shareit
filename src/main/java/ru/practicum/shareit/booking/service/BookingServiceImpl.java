@@ -43,6 +43,7 @@ public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepository;
 
     private final UserRepository userRepository;
+    private final UserService userService;
 
     //достанем юзверя из репозитория
     public UserDto get(Long userId) {
