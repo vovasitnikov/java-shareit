@@ -14,6 +14,8 @@ import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.error.NotFoundException;
 import ru.practicum.shareit.error.ValidationException;
 import ru.practicum.shareit.item.dto.ItemAllFieldsDto;
+import ru.practicum.shareit.user.dto.UserDto;
+import ru.practicum.shareit.user.repository.UserRepository;
 import ru.practicum.shareit.user.service.UserService;
 
 import java.time.LocalDate;
@@ -29,6 +31,7 @@ import static ru.practicum.shareit.booking.mapper.BookingMapper.mapToBooking;
 import static ru.practicum.shareit.booking.mapper.BookingMapper.mapToBookingAllFieldsDto;
 import static ru.practicum.shareit.item.mapper.ItemMapper.mapToItem;
 import static ru.practicum.shareit.user.mapper.UserMapper.mapToUser;
+import static ru.practicum.shareit.user.mapper.UserMapper.mapToUserDto;
 import static ru.practicum.shareit.utils.Pagination.*;
 
 
@@ -38,7 +41,18 @@ import static ru.practicum.shareit.utils.Pagination.*;
 @Transactional(readOnly = true)
 public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepository;
+
+    private final UserRepository userRepository;
     private final UserService userService;
+
+    //достанем юзверя из репозитория
+    public UserDto get(Long userId) {
+        if (userId == null) throw new ValidationException("User ID cannot be null.");
+        var user = userRepository.findById(userId).orElseThrow(() -> {
+            throw new NotFoundException("User with ID #" + userId + " does not exist.");
+        });
+        return mapToUserDto(user);
+    }
 
     @Override
     @Transactional
@@ -48,7 +62,8 @@ public class BookingServiceImpl implements BookingService {
         if (!itemDto.getAvailable())
             throw new ValidationException("Item with id#" + itemDto.getId() + " cannot be booked");
         validate(bookingSavingDto);
-        var booker = mapToUser(userService.get(bookerId));
+        //var booker = mapToUser(userService.get(bookerId));
+        var booker = mapToUser(get(bookerId));
         var item = mapToItem(itemDto);
         var bookings = bookingRepository.findBookingsByItem_IdIsAndStatusIsAndEndIsAfter(
                 item.getId(),
