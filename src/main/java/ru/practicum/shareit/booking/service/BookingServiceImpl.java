@@ -16,7 +16,6 @@ import ru.practicum.shareit.error.ValidationException;
 import ru.practicum.shareit.item.dto.ItemAllFieldsDto;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.repository.UserRepository;
-import ru.practicum.shareit.user.service.UserService;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -43,7 +42,6 @@ public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepository;
 
     private final UserRepository userRepository;
-    //private final UserService userService;
 
     //достанем юзверя из репозитория
     public UserDto get(Long userId) {
