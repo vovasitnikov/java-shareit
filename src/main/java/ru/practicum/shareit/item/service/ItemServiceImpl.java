@@ -23,7 +23,6 @@ import ru.practicum.shareit.request.mapper.ItemRequestMapper;
 import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.repository.UserRepository;
-import ru.practicum.shareit.user.service.UserService;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -50,7 +49,6 @@ public class ItemServiceImpl implements ItemService {
     private final CommentRepository commentRepository;
     private final ItemRepository itemRepository;
     private final BookingService bookingService;
-    private final UserService userService;
     private final UserRepository userRepository;
 
 
