@@ -44,7 +44,7 @@ public class BookingServiceImpl implements BookingService {
     private final UserRepository userRepository;
 
     //достанем юзверя из репозитория
-    public UserDto get(Long userId) {
+    private UserDto get(Long userId) {
         if (userId == null) throw new ValidationException("User ID cannot be null.");
         var user = userRepository.findById(userId).orElseThrow(() -> {
             throw new NotFoundException("User with ID #" + userId + " does not exist.");
