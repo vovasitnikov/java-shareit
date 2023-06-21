@@ -4,6 +4,7 @@ import ru.practicum.shareit.item.repository.CommentRepository;
 import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.booking.service.BookingService;
 import ru.practicum.shareit.error.ValidationException;
+import ru.practicum.shareit.user.repository.UserRepository;
 import ru.practicum.shareit.user.service.UserService;
 import ru.practicum.shareit.error.NotFoundException;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,6 +44,7 @@ class ItemServiceUnitTest {
     private ItemDto itemDto;
     private UserDto userDto;
     private Item item;
+    private  UserRepository userRepository;
 
     @BeforeEach
     void initialize() {
@@ -50,7 +52,7 @@ class ItemServiceUnitTest {
                 commentRepository,
                 itemRepository,
                 bookingService,
-                userService
+                userRepository
         );
         userDto = new UserDto(
                 1L,

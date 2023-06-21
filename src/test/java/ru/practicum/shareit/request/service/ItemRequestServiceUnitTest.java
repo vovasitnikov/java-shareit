@@ -5,6 +5,7 @@ import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.error.ValidationException;
 import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.item.service.ItemService;
+import ru.practicum.shareit.user.repository.UserRepository;
 import ru.practicum.shareit.user.service.UserService;
 import ru.practicum.shareit.error.NotFoundException;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -23,9 +24,6 @@ import static java.time.LocalDateTime.*;
 import static org.mockito.Mockito.*;
 import static java.util.List.*;
 
-/**
- * @author Oleg Khilko
- */
 
 @ExtendWith(MockitoExtension.class)
 class ItemRequestServiceUnitTest {
@@ -39,6 +37,7 @@ class ItemRequestServiceUnitTest {
     @Mock
     private UserService userService;
     private UserDto userDto;
+    private  UserRepository userRepository;
 
     @BeforeEach
     void initialize() {
@@ -53,7 +52,8 @@ class ItemRequestServiceUnitTest {
                 now(),
                 of()
         );
-        itemRequestService = new ItemRequestServiceImpl(itemRequestRepository, userService, itemService);
+
+        itemRequestService = new ItemRequestServiceImpl(itemRequestRepository, userRepository, itemService);
         itemRequest = mapToItemRequest(itemRequestDto, userDto);
     }
 

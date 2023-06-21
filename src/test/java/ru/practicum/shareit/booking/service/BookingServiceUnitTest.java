@@ -4,6 +4,7 @@ import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.booking.dto.BookingAllFieldsDto;
 import ru.practicum.shareit.booking.dto.BookingSavingDto;
 import ru.practicum.shareit.error.ValidationException;
+import ru.practicum.shareit.user.repository.UserRepository;
 import ru.practicum.shareit.user.service.UserService;
 import ru.practicum.shareit.error.NotFoundException;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -41,10 +42,12 @@ class BookingServiceUnitTest {
     private UserService userService;
     private UserDto userDto;
     private Booking booking;
+    private  UserRepository userRepository;
 
     @BeforeEach
     void initialize() {
-        bookingService = new BookingServiceImpl(bookingRepository, userService);
+
+        bookingService = new BookingServiceImpl(bookingRepository, userRepository);
         bookingCreatedDto = BookingSavingDto.builder()
                 .id(1L)
                 .start(now())
