@@ -42,6 +42,7 @@ class BookingServiceUnitTest {
     private UserService userService;
     private UserDto userDto;
     private Booking booking;
+    @Mock
     private  UserRepository userRepository;
 
     @BeforeEach
