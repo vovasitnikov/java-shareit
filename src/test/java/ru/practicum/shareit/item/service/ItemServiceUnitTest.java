@@ -18,8 +18,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import java.util.Optional;
-
 import static ru.practicum.shareit.item.mapper.ItemMapper.mapToItemDto;
 import static ru.practicum.shareit.item.mapper.ItemMapper.mapToItem;
 import static ru.practicum.shareit.user.mapper.UserMapper.mapToUser;
