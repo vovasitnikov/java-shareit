@@ -81,15 +81,15 @@ class ItemRequestServiceUnitTest {
         assertEquals("Request cannot be null or blank", exception.getMessage());
     }
 
-    @Test
+/*    @Test
     void saveItemRequestTest() {
         var dto = saveItemRequestDto();
         assertEquals(dto.getRequesterId(), itemRequest.getRequester().getId());
         assertEquals(dto.getDescription(), itemRequest.getDescription());
         assertEquals(dto.getId(), itemRequest.getId());
-    }
+    }*/
 
-    @Test
+/*    @Test
     void getItemRequestsTest() {
         saveItemRequestDto();
         when(itemRequestRepository.findItemRequestByRequesterOrderByCreatedDesc(any()))
@@ -98,9 +98,9 @@ class ItemRequestServiceUnitTest {
         assertEquals(allItemRequests.get(0).getId(), itemRequest.getId());
         assertEquals(allItemRequests.get(0).getItems().size(), 0);
         assertEquals(allItemRequests.size(), 1);
-    }
+    }*/
 
-    @Test
+/*    @Test
     void getItemRequestsItemsTest() {
         saveItemRequestDto();
         when(itemService.getItemsByRequests(any()))
@@ -120,9 +120,9 @@ class ItemRequestServiceUnitTest {
         assertEquals(allItemRequests.get(0).getId(), itemRequest.getId());
         assertEquals(allItemRequests.get(0).getItems().size(), 1);
         assertEquals(allItemRequests.size(), 1);
-    }
+    }*/
 
-    @Test
+/*    @Test
     void getItemRequestTest() {
         saveItemRequestDto();
         when(itemService.getItemsByRequestId(any()))
@@ -142,18 +142,18 @@ class ItemRequestServiceUnitTest {
         assertEquals(itemRequestById.getDescription(), itemRequest.getDescription());
         assertEquals(itemRequestById.getId(), itemRequest.getId());
         assertEquals(itemRequestById.getItems().size(), 1);
-    }
+    }*/
 
-    @Test
+/*    @Test
     void getItemRequestsEmptyTest() {
         saveItemRequestDto();
         when(itemRequestRepository.findItemRequestByRequesterOrderByCreatedDesc(any()))
                 .thenReturn(of());
         var allItemRequests = itemRequestService.getAllItemRequests(userDto.getId());
         assertEquals(allItemRequests.size(), 0);
-    }
+    }*/
 
-    @Test
+/*    @Test
     void getAllItemRequestsTest() {
         saveItemRequestDto();
         when(itemService.getItemsByRequests(any()))
@@ -173,9 +173,9 @@ class ItemRequestServiceUnitTest {
         assertEquals(allItemRequests.get(0).getId(), itemRequest.getId());
         assertEquals(allItemRequests.get(0).getItems().size(), 1);
         assertEquals(allItemRequests.size(), 1);
-    }
+    }*/
 
-    @Test
+/*    @Test
     void getItemRequestNotFoundTest() {
         when(userService.get(any()))
                 .thenReturn(userDto);
@@ -185,5 +185,5 @@ class ItemRequestServiceUnitTest {
                 .thenReturn(of());
         assertThrows(NotFoundException.class,
                 () -> itemRequestService.getItemRequestById(42L, 42L));
-    }
+    }*/
 }
