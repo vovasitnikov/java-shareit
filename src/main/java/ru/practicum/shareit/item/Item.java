@@ -7,13 +7,10 @@ import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.user.User;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+/*import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;*/
 import java.util.Objects;
 
-/**
- * TODO Sprint add-controllers.
- */
 
 @Entity
 @Getter
@@ -28,24 +25,26 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank(message = "Название вещи не может быть пустым")
+    //@NotBlank(message = "Название вещи не может быть пустым")
+    @Column(name = "name", nullable = false)
     private String name;                                                    // @Column не указан
 
-    @NotNull(message = "Не указано описание вещи")
+    //@NotNull(message = "Не указано описание вещи")
+    @Column(name = "description", nullable = false)
     private String description;                                             // @Column не указан
 
     @ManyToOne(fetch = FetchType.LAZY)                                      // связь когда множество this объектов связаны с одним объектом из данного поля
-    @JoinColumn(name = "owner_id")
+    @JoinColumn(name = "owner_id", nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ToString.Exclude
     private User owner;
 
     @Column(name = "is_available")
-    @NotNull(message = "Не указана доступность вещи")
+    //@NotNull(message = "Не указана доступность вещи")
     private Boolean isAvailable;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "request_id")
+    @JoinColumn(name = "request_id", nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ToString.Exclude
     private ItemRequest request;
