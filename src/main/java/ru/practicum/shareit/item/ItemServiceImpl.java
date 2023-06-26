@@ -12,7 +12,7 @@ import ru.practicum.shareit.item.comment.CommentDto;
 import ru.practicum.shareit.item.comment.CommentMapper;
 import ru.practicum.shareit.item.comment.CommentRepository;
 import ru.practicum.shareit.request.ItemRequestRepository;
-//import ru.practicum.shareit.user.UserRepository;
+import ru.practicum.shareit.user.UserRepository;
 import ru.practicum.shareit.user.UserService;
 import ru.practicum.shareit.utility.PageDefinition;
 
@@ -33,7 +33,7 @@ public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
     private final BookingRepository bookingRepository;
     private final CommentRepository commentRepository;
-    //private final UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     public ItemDto addItem(Integer userId, ItemDto itemDto) {
