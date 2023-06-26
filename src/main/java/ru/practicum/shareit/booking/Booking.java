@@ -7,8 +7,6 @@ import ru.practicum.shareit.item.Item;
 import ru.practicum.shareit.user.User;
 
 import javax.persistence.*;
-/*import javax.validation.constraints.Future;
-import javax.validation.constraints.NotNull;*/
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -27,25 +25,19 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    //@NotNull(message = "Нужно указать дату начала бронирования")
-    //@Future(message = "Начало бронирования не может быть в прошлом")
     @Column(name = "start_date", nullable = false)
     private LocalDateTime start;
 
-    //@NotNull(message = "Нужно указать дату конца бронирования")
-    //@Future(message = "Завершение бронирования не может быть в прошлом")
     @Column(name = "end_date", nullable = false)
     private LocalDateTime end;
 
-    //@NotNull(message = "Нужно указать объект бронирования")
-    @ManyToOne(fetch = FetchType.LAZY)                                          // связь когда множество this объектов связаны с одним объектом из данного поля
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "item_id", nullable = false)
     @ToString.Exclude
     private Item item;
 
-    //@NotNull(message = "Нужно указать пользователя-инициатора бронирования")
-    @ManyToOne(fetch = FetchType.LAZY)                                          // связь когда множество this объектов связаны с одним объектом из данного поля
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "booker_id", nullable = false)
     @ToString.Exclude
