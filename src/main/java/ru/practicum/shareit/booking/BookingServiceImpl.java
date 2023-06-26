@@ -35,7 +35,7 @@ public class BookingServiceImpl implements BookingService {
     public BookingDto createBooking(Integer userId, BookingItemDto bookingItemDto) {
         checkBookingDates(bookingItemDto);
         User user = userService.getUserById(userId);
-        //User user = userRepository.findById(userId).orElseThrow(throw new NotFoundException("Пользователь не может забронировать собственный предмет"));
+        User user1 = userRepository.findById(userId).orElseThrow(throw new NotFoundException("Пользователь не может забронировать собственный предмет"));
         Item item = itemService.getItemById(bookingItemDto.getItemId());
         if (item.getOwner().equals(user)) {
             log.warn("Пользователь не может забронировать собственный предмет");
