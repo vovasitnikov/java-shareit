@@ -1,14 +1,9 @@
 package ru.practicum.shareit.booking;
 
-
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
-
 public interface BookingService {
-
-
+    
     BookingDto createBooking(Integer userId, BookingItemDto bookingItemDto);
 
     BookingDto responseToBooking(Integer userId, Integer bookingId, Boolean approved);
