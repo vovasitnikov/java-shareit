@@ -96,6 +96,10 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<BookingDto> getBookingsForUser(Integer userId, String state, int from, int size) {
         userService.getUserById(userId);
+        /* userRepository.findById(userId).orElseThrow(() -> {
+            log.warn("Пользователь не найден");
+            return new NotFoundException("Такой пользователь не найден");
+        });*/
         PageRequest page = PageDefinition.definePage(from, size);
         Page<Booking> userBookings;
         switch (state) {
@@ -127,6 +131,10 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<BookingDto> getBookingsForOwner(Integer userId, String state, int from, int size) {
         userService.getUserById(userId);
+        /* userRepository.findById(userId).orElseThrow(() -> {
+            log.warn("Пользователь не найден");
+            return new NotFoundException("Такой пользователь не найден");
+        });*/
         PageRequest page = PageDefinition.definePage(from, size);
         Page<Booking> ownerBookings;
         switch (state) {
