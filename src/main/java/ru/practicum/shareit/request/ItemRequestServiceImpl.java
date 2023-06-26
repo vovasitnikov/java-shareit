@@ -10,6 +10,7 @@ import ru.practicum.shareit.item.ItemDto;
 import ru.practicum.shareit.item.ItemMapper;
 import ru.practicum.shareit.item.ItemRepository;
 import ru.practicum.shareit.user.User;
+import ru.practicum.shareit.user.UserRepository;
 import ru.practicum.shareit.user.UserService;
 import ru.practicum.shareit.utility.PageDefinition;
 
@@ -27,10 +28,15 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     private final ItemRequestRepository itemRequestRepository;
     private final ItemRepository itemRepository;
     private final UserService userService;
+    private final UserRepository userRepository;
 
     @Override
     public ItemRequestDto addRequest(Integer userId, ItemRequestDto itemRequestDto) {
-        User user = userService.getUserById(userId);
+        //User user = userService.getUserById(userId);
+        User user = userRepository.findById(userId).orElseThrow(() -> {
+            log.warn("Пользователь не найден");
+            return new NotFoundException("Такой пользователь не найден");
+        });
         itemRequestDto.setRequesterId(userId);
         itemRequestDto.setCreated(LocalDateTime.now());
         ItemRequest savedRequest;
