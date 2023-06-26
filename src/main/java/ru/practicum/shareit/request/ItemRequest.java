@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 
+
 @Entity
 @Getter
 @Setter
@@ -30,12 +31,13 @@ public class ItemRequest {
     @NotBlank(message = "Не указано описание запроса")
     private String description;
 
-    @Column(name = "created", nullable = false)
+    @NotNull(message = "Не указано время создания запроса")
     private LocalDateTime created;
 
+    @NotNull(message = "Не указан инициатор запроса")
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @JoinColumn(name = "requester_id", nullable = false)
+    @JoinColumn(name = "requester_id")
     @ToString.Exclude
     private User requester;
 
