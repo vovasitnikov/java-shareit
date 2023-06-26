@@ -173,5 +173,4 @@ public class BookingServiceImpl implements BookingService {
             throw new ValidationException("Даты бронирования не корректны");
         }
     }
-
 }
