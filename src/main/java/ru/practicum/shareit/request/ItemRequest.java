@@ -31,13 +31,14 @@ public class ItemRequest {
     @NotBlank(message = "Не указано описание запроса")
     private String description;
 
-    @NotNull(message = "Не указано время создания запроса")
+    //@NotNull(message = "Не указано время создания запроса")
+    @Column(name = "created", nullable = false)
     private LocalDateTime created;
 
     @NotNull(message = "Не указан инициатор запроса")
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @JoinColumn(name = "requester_id")
+    @JoinColumn(name = "requester_id", nullable = false)
     @ToString.Exclude
     private User requester;
 
