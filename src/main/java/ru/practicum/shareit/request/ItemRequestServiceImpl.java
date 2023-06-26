@@ -10,7 +10,6 @@ import ru.practicum.shareit.item.ItemDto;
 import ru.practicum.shareit.item.ItemMapper;
 import ru.practicum.shareit.item.ItemRepository;
 import ru.practicum.shareit.user.User;
-import ru.practicum.shareit.user.UserRepository;
 import ru.practicum.shareit.user.UserService;
 import ru.practicum.shareit.utility.PageDefinition;
 
@@ -28,12 +27,10 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     private final ItemRequestRepository itemRequestRepository;
     private final ItemRepository itemRepository;
     private final UserService userService;
-    private final UserRepository userRepository;
 
     @Override
     public ItemRequestDto addRequest(Integer userId, ItemRequestDto itemRequestDto) {
-        //User user = userService.getUserById(userId);
-        User user = userRepository.findById(userId).orElseThrow();
+        User user = userService.getUserById(userId);
         itemRequestDto.setRequesterId(userId);
         itemRequestDto.setCreated(LocalDateTime.now());
         ItemRequest savedRequest;
@@ -53,10 +50,6 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     @Override
     public List<ItemRequestDto> getMyRequests(Integer userId) {
         userService.getUserById(userId);
-/*        User user = userRepository.findById(userId).orElseThrow(() -> {
-            log.warn("Пользователь не найден");
-            return new NotFoundException("Такой пользователь не найден");
-        });*/
         log.info("Получен список запросов для пользователя id={}", userId);
 
         return itemRequestRepository.findAllByRequesterIdOrderByCreatedDesc(userId)
@@ -69,10 +62,6 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     @Override
     public ItemRequestDto getRequestById(Integer userId, Integer requestId) {
         userService.getUserById(userId);
-/*        User user = userRepository.findById(userId).orElseThrow(() -> {
-            log.warn("Пользователь не найден");
-            return new NotFoundException("Такой пользователь не найден");
-        });*/
         ItemRequestDto itemRequestDto = ItemRequestMapper.toItemRequestDto(
                 itemRequestRepository.findById(requestId)
                         .orElseThrow(() -> {
@@ -88,10 +77,6 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     @Override
     public List<ItemRequestDto> getAllRequests(Integer userId, int from, int size) {
         userService.getUserById(userId);
-/*        User user = userRepository.findById(userId).orElseThrow(() -> {
-            log.warn("Пользователь не найден");
-            return new NotFoundException("Такой пользователь не найден");
-        });*/
         log.info("Пользователем id={} вызван список других запросов", userId);
 
         return itemRequestRepository.findAllByRequesterIdNotOrderByCreatedDesc(userId, PageDefinition.definePage(from, size))
