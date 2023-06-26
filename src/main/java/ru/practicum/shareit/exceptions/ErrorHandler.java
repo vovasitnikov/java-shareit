@@ -39,7 +39,7 @@ public class ErrorHandler {
         return new ErrorResponse("Произошла непредвиденная ошибка");
     }
 
-    static class ErrorResponse {
+     class ErrorResponse {
         String error;
 
         public ErrorResponse(String error) {
