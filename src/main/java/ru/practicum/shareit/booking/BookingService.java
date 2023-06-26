@@ -5,10 +5,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Transactional
+
 public interface BookingService {
 
-    @Transactional
+
     BookingDto createBooking(Integer userId, BookingItemDto bookingItemDto);
 
     BookingDto responseToBooking(Integer userId, Integer bookingId, Boolean approved);
