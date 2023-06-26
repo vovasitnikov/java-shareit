@@ -17,6 +17,7 @@ import ru.practicum.shareit.utility.PageDefinition;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -35,10 +36,7 @@ public class BookingServiceImpl implements BookingService {
     public BookingDto createBooking(Integer userId, BookingItemDto bookingItemDto) {
         checkBookingDates(bookingItemDto);
         User user = userService.getUserById(userId);
-        User user1 = userRepository.findById(userId).orElseThrow(() -> {
-            log.warn("Пользователь не найден");
-            return new NotFoundException("Такой пользователь не найден");
-        });
+        Optional<User> user1 = userRepository.findById(userId);
         Item item = itemService.getItemById(bookingItemDto.getItemId());
         if (item.getOwner().equals(user)) {
             log.warn("Пользователь не может забронировать собственный предмет");
