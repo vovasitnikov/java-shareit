@@ -26,24 +26,24 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String text;                                    // @Column не указан, т.к названия поля и колонки совпадают
+    private String text;                                   
 
     //@Column(name = "item", nullable = false)
     //@NotNull(message = "Не указан объект комментария")
-    @ManyToOne(fetch = FetchType.LAZY)                                      // связь когда множество this объектов связаны с одним объектом из данного поля
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "item_id")
     @ToString.Exclude
     private Item item;
 
-    @NotNull(message = "Не указан автор комментария")
-    @ManyToOne(fetch = FetchType.LAZY)                                      // связь когда множество this объектов связаны с одним объектом из данного поля
+    //@NotNull(message = "Не указан автор комментария")
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "author_id")
     @ToString.Exclude
     private User author;
 
-    private LocalDateTime created;                           // @Column не указан
+    private LocalDateTime created;
 
     public Comment(Integer id, String text, LocalDateTime created) {
         this.id = id;
