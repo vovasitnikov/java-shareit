@@ -28,7 +28,8 @@ public class Comment {
 
     private String text;                                    // @Column не указан, т.к названия поля и колонки совпадают
 
-    @NotNull(message = "Не указан объект комментария")
+    //@Column(name = "item", nullable = false)
+    //@NotNull(message = "Не указан объект комментария")
     @ManyToOne(fetch = FetchType.LAZY)                                      // связь когда множество this объектов связаны с одним объектом из данного поля
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "item_id")
