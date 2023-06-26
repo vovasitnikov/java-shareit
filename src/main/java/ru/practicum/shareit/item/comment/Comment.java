@@ -10,7 +10,7 @@ import ru.practicum.shareit.item.Item;
 import ru.practicum.shareit.user.User;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+//import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -26,23 +26,23 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String text;                                    // @Column не указан, т.к названия поля и колонки совпадают
+    private String text;
 
-    @NotNull(message = "Не указан объект комментария")
-    @ManyToOne(fetch = FetchType.LAZY)                                      // связь когда множество this объектов связаны с одним объектом из данного поля
+    //@NotNull(message = "Не указан объект комментария")
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @JoinColumn(name = "item_id")
+    @JoinColumn(name = "item_id", nullable = false)
     @ToString.Exclude
     private Item item;
 
-    @NotNull(message = "Не указан автор комментария")
-    @ManyToOne(fetch = FetchType.LAZY)                                      // связь когда множество this объектов связаны с одним объектом из данного поля
+    //@NotNull(message = "Не указан автор комментария")
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @JoinColumn(name = "author_id")
+    @JoinColumn(name = "author_id", nullable = false)
     @ToString.Exclude
     private User author;
 
-    private LocalDateTime created;                           // @Column не указан
+    private LocalDateTime created;
 
     public Comment(Integer id, String text, LocalDateTime created) {
         this.id = id;
