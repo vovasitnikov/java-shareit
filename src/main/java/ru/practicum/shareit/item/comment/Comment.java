@@ -32,7 +32,7 @@ public class Comment {
     @JoinColumn(name = "item_id")
     @ToString.Exclude
     private Item item;
-    
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "author_id")
