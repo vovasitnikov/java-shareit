@@ -12,8 +12,8 @@ import ru.practicum.shareit.item.comment.CommentDto;
 import ru.practicum.shareit.item.comment.CommentMapper;
 import ru.practicum.shareit.item.comment.CommentRepository;
 import ru.practicum.shareit.request.ItemRequestRepository;
-import ru.practicum.shareit.user.UserRepository;
-//import ru.practicum.shareit.user.UserService;
+//import ru.practicum.shareit.user.UserRepository;
+import ru.practicum.shareit.user.UserService;
 import ru.practicum.shareit.utility.PageDefinition;
 
 import java.time.LocalDateTime;
@@ -28,12 +28,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
 
-    //private final UserService userService;
+    private final UserService userService;
     private final ItemRequestRepository itemRequestRepository;
     private final ItemRepository itemRepository;
     private final BookingRepository bookingRepository;
     private final CommentRepository commentRepository;
-    private final UserRepository userRepository;
+    //private final UserRepository userRepository;
 
     @Override
     public ItemDto addItem(Integer userId, ItemDto itemDto) {
@@ -43,8 +43,8 @@ public class ItemServiceImpl implements ItemService {
             throw new ValidationException("Недостаточно данных для создания вещи");
         }
         Item item = ItemMapper.toItem(itemDto);
-        //item.setOwner(userService.getUserById(userId));
-        item.setOwner(userRepository.findById(userId).orElseThrow(() -> new NotFoundException("Пользователь не существует")));
+        item.setOwner(userService.getUserById(userId));
+        //item.setOwner(userRepository.findById(userId).orElseThrow(() -> new NotFoundException("Пользователь не существует")));
         if (itemDto.getRequestId() != null) {
             item.setRequest(itemRequestRepository.getReferenceById(itemDto.getRequestId()));
         }

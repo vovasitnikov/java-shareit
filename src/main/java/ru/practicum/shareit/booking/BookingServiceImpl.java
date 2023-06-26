@@ -9,11 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.exceptions.ValidationException;
 import ru.practicum.shareit.item.Item;
-import ru.practicum.shareit.item.ItemRepository;
-//import ru.practicum.shareit.item.ItemService;
+//import ru.practicum.shareit.item.ItemRepository;
+import ru.practicum.shareit.item.ItemService;
 import ru.practicum.shareit.user.User;
-import ru.practicum.shareit.user.UserRepository;
-//import ru.practicum.shareit.user.UserService;
+//import ru.practicum.shareit.user.UserRepository;
+import ru.practicum.shareit.user.UserService;
 import ru.practicum.shareit.utility.PageDefinition;
 
 import java.time.LocalDateTime;
@@ -27,19 +27,19 @@ import java.util.stream.Collectors;
 public class BookingServiceImpl implements BookingService {
 
     private final BookingRepository bookingRepository;
-    //private final UserService userService;
-    //private final ItemService itemService;
-    private final UserRepository userRepository;
-    private final ItemRepository itemRepository;
+    private final UserService userService;
+    private final ItemService itemService;
+    //private final UserRepository userRepository;
+    //private final ItemRepository itemRepository;
 
     @Override
     @Transactional
     public BookingDto createBooking(Integer userId, BookingItemDto bookingItemDto) {
         checkBookingDates(bookingItemDto);
-        //User user = userService.getUserById(userId);
-        //Item item = itemService.getItemById(bookingItemDto.getItemId());
-        User user = userRepository.findById(userId).orElseThrow();
-        Item item = itemRepository.findById(bookingItemDto.getItemId()).orElseThrow();
+        User user = userService.getUserById(userId);
+        Item item = itemService.getItemById(bookingItemDto.getItemId());
+        //User user = userRepository.findById(userId).orElseThrow();
+        //Item item = itemRepository.findById(bookingItemDto.getItemId()).orElseThrow();
         if (item.getOwner().equals(user)) {
             log.warn("Пользователь не может забронировать собственный предмет");
             throw new NotFoundException("Пользователь не может забронировать собственный предмет");
@@ -83,8 +83,8 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public BookingDto getBookingById(Integer userId, Integer bookingId) {
         Booking booking = checkBookingForExist(bookingId);
-        //userService.getUserById(userId);
-        userRepository.findById(userId).orElseThrow();
+        userService.getUserById(userId);
+        //userRepository.findById(userId).orElseThrow();
         Integer ownerId = booking.getItem().getOwner().getId();
         Integer bookerId = booking.getBooker().getId();
         if (!ownerId.equals(userId) && !bookerId.equals(userId)) {
@@ -96,8 +96,8 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<BookingDto> getBookingsForUser(Integer userId, String state, int from, int size) {
-        //userService.getUserById(userId);
-        userRepository.findById(userId).orElseThrow();
+        userService.getUserById(userId);
+        //userRepository.findById(userId).orElseThrow();
         PageRequest page = PageDefinition.definePage(from, size);
         Page<Booking> userBookings;
         switch (state) {
@@ -128,8 +128,8 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<BookingDto> getBookingsForOwner(Integer userId, String state, int from, int size) {
-        //userService.getUserById(userId);
-        userRepository.findById(userId).orElseThrow();
+        userService.getUserById(userId);
+        //userRepository.findById(userId).orElseThrow();
         PageRequest page = PageDefinition.definePage(from, size);
         Page<Booking> ownerBookings;
         switch (state) {
