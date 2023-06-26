@@ -49,14 +49,19 @@ public class Booking {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Booking booking = (Booking) o;
-        return id != null && Objects.equals(id, booking.id);
+        if (!(o instanceof Booking)) return false;
+        final Booking booking = (Booking) o;
+        if (!booking.getId().equals(getId())) return false;
+        if (!booking.getBooker().equals(getBooker())) return false;
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        int result;
+        result = getBooker().hashCode();
+        result = 11 * result + getId();
+        return result;
     }
 
 }

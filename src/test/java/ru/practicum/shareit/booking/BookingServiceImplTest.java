@@ -34,6 +34,7 @@ class BookingServiceImplTest {
     private BookingRepository bookingRepository;
     @Mock
     private UserService userService;
+
     @Mock
     private ItemService itemService;
     @InjectMocks
