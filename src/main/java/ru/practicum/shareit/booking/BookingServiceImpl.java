@@ -38,8 +38,8 @@ public class BookingServiceImpl implements BookingService {
         checkBookingDates(bookingItemDto);
         //User user = userService.getUserById(userId);
         //Item item = itemService.getItemById(bookingItemDto.getItemId());
-        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("Пользователь не существует"));
-        Item item = itemRepository.findById(bookingItemDto.getItemId()).orElseThrow(() -> new NotFoundException("Предмет не найден"));
+        User user = userRepository.findById(userId).orElseThrow();
+        Item item = itemRepository.findById(bookingItemDto.getItemId()).orElseThrow();
         if (item.getOwner().equals(user)) {
             log.warn("Пользователь не может забронировать собственный предмет");
             throw new NotFoundException("Пользователь не может забронировать собственный предмет");
@@ -84,7 +84,7 @@ public class BookingServiceImpl implements BookingService {
     public BookingDto getBookingById(Integer userId, Integer bookingId) {
         Booking booking = checkBookingForExist(bookingId);
         //userService.getUserById(userId);
-        userRepository.findById(userId).orElseThrow(() -> new NotFoundException("Пользователь не существует"));
+        userRepository.findById(userId).orElseThrow();
         Integer ownerId = booking.getItem().getOwner().getId();
         Integer bookerId = booking.getBooker().getId();
         if (!ownerId.equals(userId) && !bookerId.equals(userId)) {
@@ -97,7 +97,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<BookingDto> getBookingsForUser(Integer userId, String state, int from, int size) {
         //userService.getUserById(userId);
-        userRepository.findById(userId).orElseThrow(() -> new NotFoundException("Пользователь не существует"));
+        userRepository.findById(userId).orElseThrow();
         PageRequest page = PageDefinition.definePage(from, size);
         Page<Booking> userBookings;
         switch (state) {
@@ -129,7 +129,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<BookingDto> getBookingsForOwner(Integer userId, String state, int from, int size) {
         //userService.getUserById(userId);
-        userRepository.findById(userId).orElseThrow(() -> new NotFoundException("Пользователь не существует"));
+        userRepository.findById(userId).orElseThrow();
         PageRequest page = PageDefinition.definePage(from, size);
         Page<Booking> ownerBookings;
         switch (state) {
