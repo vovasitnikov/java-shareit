@@ -31,7 +31,6 @@ public class ItemRequest {
     @NotBlank(message = "Не указано описание запроса")
     private String description;
 
-    //@NotNull(message = "Не указано время создания запроса")
     @Column(name = "created", nullable = false)
     private LocalDateTime created;
 
@@ -41,18 +40,4 @@ public class ItemRequest {
     @JoinColumn(name = "requester_id", nullable = false)
     @ToString.Exclude
     private User requester;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        ItemRequest that = (ItemRequest) o;
-        return id != null && Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
-
 }
