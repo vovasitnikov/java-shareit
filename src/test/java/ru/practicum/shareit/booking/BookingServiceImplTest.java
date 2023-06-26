@@ -14,6 +14,7 @@ import ru.practicum.shareit.exceptions.ValidationException;
 import ru.practicum.shareit.item.Item;
 import ru.practicum.shareit.item.ItemService;
 import ru.practicum.shareit.user.User;
+import ru.practicum.shareit.user.UserRepository;
 import ru.practicum.shareit.user.UserService;
 
 import java.time.LocalDateTime;
@@ -32,8 +33,9 @@ class BookingServiceImplTest {
 
     @Mock
     private BookingRepository bookingRepository;
+
     @Mock
-    private UserService userService;
+    private UserRepository userRepository;
     @Mock
     private ItemService itemService;
     @InjectMocks
@@ -60,7 +62,7 @@ class BookingServiceImplTest {
     @Test
     void createBooking_returnBooking() {
         BookingItemDto bookingItemDto = BookingMapper.toBookingItemDto(booking);
-        when(userService.getUserById(anyInt())).thenReturn(user2);
+        when(userRepository.findById(anyInt())).thenReturn(Optional.of(user2));
         when(itemService.getItemById(any())).thenReturn(item);
         when(bookingRepository.save(any())).thenReturn(booking);
 
@@ -73,7 +75,7 @@ class BookingServiceImplTest {
     @Test
     void createBooking_selfBooking_returnException() {
         BookingItemDto bookingItemDto = BookingMapper.toBookingItemDto(booking);
-        when(userService.getUserById(anyInt())).thenReturn(user1);
+        when(userRepository.findById(anyInt())).thenReturn(Optional.of(user1));
         when(itemService.getItemById(any())).thenReturn(item);
 
         assertThrows(
@@ -86,7 +88,7 @@ class BookingServiceImplTest {
     void createBooking_notAvailable_returnException() {
         item.setIsAvailable(false);
         BookingItemDto bookingItemDto = BookingMapper.toBookingItemDto(booking);
-        when(userService.getUserById(anyInt())).thenReturn(user2);
+        when(userRepository.findById(anyInt())).thenReturn(Optional.of(user2));
         when(itemService.getItemById(any())).thenReturn(item);
 
         assertThrows(
@@ -149,7 +151,7 @@ class BookingServiceImplTest {
     @Test
     void getBookingById_returnBookingDto() {
         when(bookingRepository.findById(anyInt())).thenReturn(Optional.of(booking));
-        when(userService.getUserById(anyInt())).thenReturn(user1);
+        when(userRepository.findById(anyInt())).thenReturn(Optional.of(user1));
 
         BookingDto newBookingDto = bookingService.getBookingById(1, 1);
 
@@ -159,7 +161,7 @@ class BookingServiceImplTest {
     @Test
     void getBookingById_wrongUser_returnException() {
         when(bookingRepository.findById(anyInt())).thenReturn(Optional.of(booking));
-        when(userService.getUserById(anyInt())).thenReturn(user1);
+        when(userRepository.findById(anyInt())).thenReturn(Optional.of(user1));
 
         NotFoundException repeatBooking = assertThrows(
                 NotFoundException.class,
@@ -175,7 +177,7 @@ class BookingServiceImplTest {
         PageRequest page = PageRequest.of(from, size);
         Page<Booking> bookingPage = new PageImpl<>(bookingList);
 
-        when(userService.getUserById(anyInt())).thenReturn(user1);
+        when(userRepository.findById(anyInt())).thenReturn(Optional.of(user1));
         when(bookingRepository.findAllByBookerIdOrderByStartDesc(anyInt(), eq(page))).thenReturn(bookingPage);
         when(bookingRepository.findAllByBookerIdAndStartBeforeAndEndAfterOrderByStartDesc(anyInt(), any(), any(), eq(page))).thenReturn(bookingPage);
         when(bookingRepository.findAllByBookerIdAndEndBeforeOrderByStartDesc(anyInt(), any(), eq(page))).thenReturn(bookingPage);
@@ -201,6 +203,7 @@ class BookingServiceImplTest {
 
     @Test
     void getBookingsForUser_wrongState_returnException() {
+        when(userRepository.findById(anyInt())).thenReturn(Optional.of(user1));
         ValidationException wrongState = assertThrows(
                 ValidationException.class,
                 () -> bookingService.getBookingsForUser(1, "BELIBERDA", 0, 5));
@@ -215,7 +218,7 @@ class BookingServiceImplTest {
         PageRequest page = PageRequest.of(from, size);
         Page<Booking> bookingPage = new PageImpl<>(bookingList);
 
-        when(userService.getUserById(anyInt())).thenReturn(user1);
+        when(userRepository.findById(anyInt())).thenReturn(Optional.of(user1));
         when(bookingRepository.getBookingsForOwner(anyInt(), eq(page))).thenReturn(bookingPage);
         when(bookingRepository.getBookingsForOwnerCurrent(anyInt(), any(), any(), eq(page))).thenReturn(bookingPage);
         when(bookingRepository.getBookingsForOwnerPast(anyInt(), any(), eq(page))).thenReturn(bookingPage);
@@ -241,6 +244,7 @@ class BookingServiceImplTest {
 
     @Test
     void getBookingsForOwner_wrongState_returnException() {
+        when(userRepository.findById(anyInt())).thenReturn(Optional.of(user1));
         ValidationException wrongState = assertThrows(
                 ValidationException.class,
                 () -> bookingService.getBookingsForOwner(1, "BELIBERDA", 0, 5));
