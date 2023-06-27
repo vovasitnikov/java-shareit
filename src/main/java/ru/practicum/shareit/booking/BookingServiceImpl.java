@@ -30,11 +30,23 @@ public class BookingServiceImpl implements BookingService {
     private final ItemService itemService;
     private final UserRepository userRepository;
 
+
+
+    public User getUserById(Integer userId) {
+        log.info("Вызван пользователь id={}", userId);
+
+        return userRepository.findById(userId).orElseThrow(() -> {
+            log.warn("Пользователь не найден");
+            return new NotFoundException("Такой пользователь не найден");
+        });
+    }
+
     @Override
     @Transactional
     public BookingDto createBooking(Integer userId, BookingItemDto bookingItemDto) {
         checkBookingDates(bookingItemDto);
         User user = userService.getUserById(userId);
+        User user1 = getUserById(userId);;
 /*        User user1 = userRepository.findById(userId).orElseThrow(() -> {
             log.warn("Пользователь не найден");
             return new NotFoundException("Такой пользователь не найден");
