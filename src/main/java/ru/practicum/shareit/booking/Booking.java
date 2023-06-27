@@ -2,11 +2,13 @@ package ru.practicum.shareit.booking;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
+import org.hibernate.Hibernate;
 import ru.practicum.shareit.item.Item;
 import ru.practicum.shareit.user.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 
 @Entity
@@ -47,19 +49,14 @@ public class Booking {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Booking)) return false;
-        final Booking booking = (Booking) o;
-        if (!booking.getId().equals(getId())) return false;
-        if (!booking.getBooker().equals(getBooker())) return false;
-        return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Booking booking = (Booking) o;
+        return id != null && Objects.equals(id, booking.id);
     }
 
     @Override
     public int hashCode() {
-        int result;
-        result = getBooker().hashCode();
-        result = 11 * result + getId();
-        return result;
+        return getClass().hashCode();
     }
 
 }
