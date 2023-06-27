@@ -62,7 +62,7 @@ class BookingServiceImplTest {
         bookingDto = BookingMapper.toBookingDto(booking);
     }
 
-/*    @Test
+    @Test
     void createBooking_returnBooking() {
         BookingItemDto bookingItemDto = BookingMapper.toBookingItemDto(booking);
         when(userService.getUserById(anyInt())).thenReturn(user2);
@@ -73,9 +73,9 @@ class BookingServiceImplTest {
 
         assertEquals(bookingDto, newBookingDto);
         verify(bookingRepository).save(booking);
-    }*/
+    }
 
-/*    @Test
+    @Test
     void createBooking_selfBooking_returnException() {
         BookingItemDto bookingItemDto = BookingMapper.toBookingItemDto(booking);
         when(userService.getUserById(anyInt())).thenReturn(user1);
@@ -85,9 +85,9 @@ class BookingServiceImplTest {
                 NotFoundException.class,
                 () -> bookingService.createBooking(2, bookingItemDto));
         verify(bookingRepository, never()).save(any());
-    }*/
+    }
 
-/*    @Test
+    @Test
     void createBooking_notAvailable_returnException() {
         item.setIsAvailable(false);
         BookingItemDto bookingItemDto = BookingMapper.toBookingItemDto(booking);
@@ -98,7 +98,7 @@ class BookingServiceImplTest {
                 ValidationException.class,
                 () -> bookingService.createBooking(2, bookingItemDto));
         verify(bookingRepository, never()).save(any());
-    }*/
+    }
 
     @Test
     void responseToBooking_returnApprovedBooking() {

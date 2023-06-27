@@ -46,7 +46,7 @@ public class BookingServiceImpl implements BookingService {
     public BookingDto createBooking(Integer userId, BookingItemDto bookingItemDto) {
         checkBookingDates(bookingItemDto);
         User user = userService.getUserById(userId);
-        User user1 = getUserById(userId);;
+        //User user1 = getUserById(userId);;
 /*        User user1 = userRepository.findById(userId).orElseThrow(() -> {
             log.warn("Пользователь не найден");
             return new NotFoundException("Такой пользователь не найден");
