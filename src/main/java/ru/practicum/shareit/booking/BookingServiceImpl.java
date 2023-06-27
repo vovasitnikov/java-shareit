@@ -11,7 +11,7 @@ import ru.practicum.shareit.exceptions.ValidationException;
 import ru.practicum.shareit.item.Item;
 import ru.practicum.shareit.item.ItemService;
 import ru.practicum.shareit.user.User;
-import ru.practicum.shareit.user.UserRepository;
+import ru.practicum.shareit.user.UserService;
 import ru.practicum.shareit.utility.PageDefinition;
 
 import java.time.LocalDateTime;
@@ -25,17 +25,14 @@ import java.util.stream.Collectors;
 public class BookingServiceImpl implements BookingService {
 
     private final BookingRepository bookingRepository;
+    private final UserService userService;
     private final ItemService itemService;
-    private final UserRepository userRepository;
 
     @Override
     @Transactional
     public BookingDto createBooking(Integer userId, BookingItemDto bookingItemDto) {
         checkBookingDates(bookingItemDto);
-        User user = userRepository.findById(userId).orElseThrow(() -> {
-            log.warn("Пользователь не найден");
-            return new NotFoundException("Такой пользователь не найден");
-        });
+        User user = userService.getUserById(userId);
         Item item = itemService.getItemById(bookingItemDto.getItemId());
         if (item.getOwner().equals(user)) {
             log.warn("Пользователь не может забронировать собственный предмет");
@@ -80,10 +77,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public BookingDto getBookingById(Integer userId, Integer bookingId) {
         Booking booking = checkBookingForExist(bookingId);
-        userRepository.findById(userId).orElseThrow(() -> {
-            log.warn("Пользователь не найден");
-            return new NotFoundException("Такой пользователь не найден");
-        });
+        userService.getUserById(userId);
         Integer ownerId = booking.getItem().getOwner().getId();
         Integer bookerId = booking.getBooker().getId();
         if (!ownerId.equals(userId) && !bookerId.equals(userId)) {
@@ -95,10 +89,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<BookingDto> getBookingsForUser(Integer userId, String state, int from, int size) {
-        userRepository.findById(userId).orElseThrow(() -> {
-            log.warn("Пользователь не найден");
-            return new NotFoundException("Такой пользователь не найден");
-        });
+        userService.getUserById(userId);
         PageRequest page = PageDefinition.definePage(from, size);
         Page<Booking> userBookings;
         switch (state) {
@@ -129,10 +120,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<BookingDto> getBookingsForOwner(Integer userId, String state, int from, int size) {
-         userRepository.findById(userId).orElseThrow(() -> {
-            log.warn("Пользователь не найден");
-            return new NotFoundException("Такой пользователь не найден");
-        });
+        userService.getUserById(userId);
         PageRequest page = PageDefinition.definePage(from, size);
         Page<Booking> ownerBookings;
         switch (state) {

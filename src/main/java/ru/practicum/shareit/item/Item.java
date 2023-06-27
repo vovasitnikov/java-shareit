@@ -2,10 +2,12 @@ package ru.practicum.shareit.item;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
+import org.hibernate.Hibernate;
 import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.user.User;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 
 @Entity
@@ -69,18 +71,14 @@ public class Item {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Item)) return false;
-        final Item item = (Item) o;
-        if (!item.getId().equals(getId())) return false;
-        return item.getName().equals(getName());
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Item item = (Item) o;
+        return id != null && Objects.equals(id, item.id);
     }
 
     @Override
     public int hashCode() {
-        int result;
-        result = getName().hashCode();
-        result = 11 * result + getId();
-        return result;
+        return getClass().hashCode();
     }
 
 }

@@ -5,11 +5,13 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.Hibernate;
 import ru.practicum.shareit.item.Item;
 import ru.practicum.shareit.user.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -55,19 +57,14 @@ public class Comment {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Comment)) return false;
-        final Comment comment = (Comment) o;
-        if (!comment.getId().equals(getId())) return false;
-        if (!comment.getText().equals(getText())) return false;
-        return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Comment comment = (Comment) o;
+        return id != null && Objects.equals(id, comment.id);
     }
 
     @Override
     public int hashCode() {
-        int result;
-        result = getText().hashCode();
-        result = 11 * result + getId();
-        return result;
+        return getClass().hashCode();
     }
 
 }
