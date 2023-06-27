@@ -12,6 +12,7 @@ import ru.practicum.shareit.item.comment.CommentDto;
 import ru.practicum.shareit.item.comment.CommentMapper;
 import ru.practicum.shareit.item.comment.CommentRepository;
 import ru.practicum.shareit.request.ItemRequestRepository;
+import ru.practicum.shareit.user.UserRepository;
 import ru.practicum.shareit.user.UserService;
 import ru.practicum.shareit.utility.PageDefinition;
 
@@ -28,6 +29,7 @@ import java.util.stream.Collectors;
 public class ItemServiceImpl implements ItemService {
 
     private final UserService userService;
+    private final UserRepository userRepository;
     private final ItemRequestRepository itemRequestRepository;
     private final ItemRepository itemRepository;
     private final BookingRepository bookingRepository;
@@ -42,6 +44,7 @@ public class ItemServiceImpl implements ItemService {
         }
         Item item = ItemMapper.toItem(itemDto);
         item.setOwner(userService.getUserById(userId));
+        /* item.setOwner(userRepository.findById(userId));*/
         if (itemDto.getRequestId() != null) {
             item.setRequest(itemRequestRepository.getReferenceById(itemDto.getRequestId()));
         }
