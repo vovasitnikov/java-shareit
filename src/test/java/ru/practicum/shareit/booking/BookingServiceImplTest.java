@@ -14,7 +14,6 @@ import ru.practicum.shareit.exceptions.ValidationException;
 import ru.practicum.shareit.item.Item;
 import ru.practicum.shareit.item.ItemService;
 import ru.practicum.shareit.user.User;
-import ru.practicum.shareit.user.UserRepository;
 import ru.practicum.shareit.user.UserService;
 
 import java.time.LocalDateTime;
@@ -33,8 +32,6 @@ class BookingServiceImplTest {
 
     @Mock
     private BookingRepository bookingRepository;
-    @Mock
-    private  UserRepository userRepository;
     @Mock
     private UserService userService;
     @Mock
@@ -63,8 +60,7 @@ class BookingServiceImplTest {
     @Test
     void createBooking_returnBooking() {
         BookingItemDto bookingItemDto = BookingMapper.toBookingItemDto(booking);
-        // when(userService.getUserById(anyInt())).thenReturn(user2);
-        when(userRepository.findById(anyInt())).thenReturn(Optional.ofNullable(user2));
+        when(userService.getUserById(anyInt())).thenReturn(user2);
         when(itemService.getItemById(any())).thenReturn(item);
         when(bookingRepository.save(any())).thenReturn(booking);
 
@@ -77,8 +73,7 @@ class BookingServiceImplTest {
     @Test
     void createBooking_selfBooking_returnException() {
         BookingItemDto bookingItemDto = BookingMapper.toBookingItemDto(booking);
-        //when(userService.getUserById(anyInt())).thenReturn(user1);
-        when(userRepository.findById(anyInt())).thenReturn(Optional.ofNullable(user1));
+        when(userService.getUserById(anyInt())).thenReturn(user1);
         when(itemService.getItemById(any())).thenReturn(item);
 
         assertThrows(
@@ -91,8 +86,7 @@ class BookingServiceImplTest {
     void createBooking_notAvailable_returnException() {
         item.setIsAvailable(false);
         BookingItemDto bookingItemDto = BookingMapper.toBookingItemDto(booking);
-        //when(userService.getUserById(anyInt())).thenReturn(user2);
-        when(userRepository.findById(anyInt())).thenReturn(Optional.ofNullable(user2));
+        when(userService.getUserById(anyInt())).thenReturn(user2);
         when(itemService.getItemById(any())).thenReturn(item);
 
         assertThrows(
@@ -155,8 +149,7 @@ class BookingServiceImplTest {
     @Test
     void getBookingById_returnBookingDto() {
         when(bookingRepository.findById(anyInt())).thenReturn(Optional.of(booking));
-        //when(userService.getUserById(anyInt())).thenReturn(user1);
-        when(userRepository.findById(anyInt())).thenReturn(Optional.ofNullable(user1));
+        when(userService.getUserById(anyInt())).thenReturn(user1);
 
         BookingDto newBookingDto = bookingService.getBookingById(1, 1);
 
@@ -166,8 +159,7 @@ class BookingServiceImplTest {
     @Test
     void getBookingById_wrongUser_returnException() {
         when(bookingRepository.findById(anyInt())).thenReturn(Optional.of(booking));
-        //when(userService.getUserById(anyInt())).thenReturn(user1);
-        when(userRepository.findById(anyInt())).thenReturn(Optional.ofNullable(user1));
+        when(userService.getUserById(anyInt())).thenReturn(user1);
 
         NotFoundException repeatBooking = assertThrows(
                 NotFoundException.class,
@@ -183,8 +175,7 @@ class BookingServiceImplTest {
         PageRequest page = PageRequest.of(from, size);
         Page<Booking> bookingPage = new PageImpl<>(bookingList);
 
-        //when(userService.getUserById(anyInt())).thenReturn(user1);
-        when(userRepository.findById(anyInt())).thenReturn(Optional.ofNullable(user1));
+        when(userService.getUserById(anyInt())).thenReturn(user1);
         when(bookingRepository.findAllByBookerIdOrderByStartDesc(anyInt(), eq(page))).thenReturn(bookingPage);
         when(bookingRepository.findAllByBookerIdAndStartBeforeAndEndAfterOrderByStartDesc(anyInt(), any(), any(), eq(page))).thenReturn(bookingPage);
         when(bookingRepository.findAllByBookerIdAndEndBeforeOrderByStartDesc(anyInt(), any(), eq(page))).thenReturn(bookingPage);
@@ -224,8 +215,7 @@ class BookingServiceImplTest {
         PageRequest page = PageRequest.of(from, size);
         Page<Booking> bookingPage = new PageImpl<>(bookingList);
 
-        //when(userService.getUserById(anyInt())).thenReturn(user1);
-        when(userRepository.findById(anyInt())).thenReturn(Optional.ofNullable(user1));
+        when(userService.getUserById(anyInt())).thenReturn(user1);
         when(bookingRepository.getBookingsForOwner(anyInt(), eq(page))).thenReturn(bookingPage);
         when(bookingRepository.getBookingsForOwnerCurrent(anyInt(), any(), any(), eq(page))).thenReturn(bookingPage);
         when(bookingRepository.getBookingsForOwnerPast(anyInt(), any(), eq(page))).thenReturn(bookingPage);

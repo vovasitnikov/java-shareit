@@ -1,4 +1,3 @@
-
 package ru.practicum.shareit.booking;
 
 import lombok.RequiredArgsConstructor;
@@ -10,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.item.ItemDto;
 import ru.practicum.shareit.item.ItemService;
 import ru.practicum.shareit.user.UserDto;
-import ru.practicum.shareit.user.UserRepository;
 import ru.practicum.shareit.user.UserService;
 
 import javax.persistence.EntityManager;
@@ -30,7 +28,6 @@ class BookingServiceImplIntegrationTest {
     private final BookingRepository bookingRepository;
     private final UserService userService;
     private final ItemService itemService;
-    private final UserRepository userRepository;
     private UserDto userDto1;
     private UserDto userDto2;
     private BookingDto bookingDto;
