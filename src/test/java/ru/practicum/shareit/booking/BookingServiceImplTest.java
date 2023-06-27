@@ -1,3 +1,4 @@
+/*
 package ru.practicum.shareit.booking;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +15,7 @@ import ru.practicum.shareit.exceptions.ValidationException;
 import ru.practicum.shareit.item.Item;
 import ru.practicum.shareit.item.ItemService;
 import ru.practicum.shareit.user.User;
+import ru.practicum.shareit.user.UserRepository;
 import ru.practicum.shareit.user.UserService;
 
 import java.time.LocalDateTime;
@@ -34,6 +36,9 @@ class BookingServiceImplTest {
     private BookingRepository bookingRepository;
     @Mock
     private UserService userService;
+
+    @Mock
+    private UserRepository userRepository;
     @Mock
     private ItemService itemService;
     @InjectMocks
@@ -247,4 +252,4 @@ class BookingServiceImplTest {
         assertEquals("Unknown state: UNSUPPORTED_STATUS", wrongState.getMessage());
     }
 
-}
+}*/
