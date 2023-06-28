@@ -199,13 +199,13 @@ class BookingServiceImplTest {
         assertEquals(statusListBookingDto, listBookingDto);
     }
 
-/*    @Test
+    @Test
     void getBookingsForUser_wrongState_returnException() {
-        ValidationException wrongState = assertThrows(
+ /*       ValidationException wrongState = assertThrows(
                 ValidationException.class,
-                () -> bookingService.getBookingsForUser(1, "BELIBERDA", 0, 5));
-        assertEquals("Unknown state: UNSUPPORTED_STATUS", wrongState.getMessage());
-    }*/
+                () -> bookingService.getBookingsForUser(1, "BELIBERDA", 0, 5));*/
+        assertEquals("Unknown state: UNSUPPORTED_STATUS", bookingService.getBookingsForUser(1, "BELIBERDA", 0, 5));
+    }
 
     @Test
     void getBookingsForOwner_returnBookingsList() {
@@ -239,12 +239,12 @@ class BookingServiceImplTest {
         assertEquals(statusListBookingDto, listBookingDto);
     }
 
-/*    @Test
+    @Test
     void getBookingsForOwner_wrongState_returnException() {
         ValidationException wrongState = assertThrows(
                 ValidationException.class,
                 () -> bookingService.getBookingsForOwner(1, "BELIBERDA", 0, 5));
         assertEquals("Unknown state: UNSUPPORTED_STATUS", wrongState.getMessage());
-    }*/
+    }
 
 }
