@@ -201,10 +201,10 @@ class BookingServiceImplTest {
 
     @Test
     void getBookingsForUser_wrongState_returnException() {
- /*       ValidationException wrongState = assertThrows(
+        ValidationException wrongState = assertThrows(
                 ValidationException.class,
-                () -> bookingService.getBookingsForUser(1, "BELIBERDA", 0, 5));*/
-        assertEquals("Unknown state: UNSUPPORTED_STATUS", bookingService.getBookingsForUser(1, "BELIBERDA", 0, 5));
+                () -> bookingService.getBookingsForUser(1, "BELIBERDA", 0, 5));
+        assertEquals("Unknown state: UNSUPPORTED_STATUS", wrongState.getMessage());
     }
 
     @Test
