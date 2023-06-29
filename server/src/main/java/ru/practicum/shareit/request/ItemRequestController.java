@@ -5,9 +5,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * TODO Sprint add-item-requests.
- */
 
 @RestController
 @RequiredArgsConstructor

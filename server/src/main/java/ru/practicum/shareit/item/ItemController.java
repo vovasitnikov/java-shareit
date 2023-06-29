@@ -6,10 +6,6 @@ import ru.practicum.shareit.item.comment.CommentDto;
 
 import java.util.List;
 
-/**
- * TODO Sprint add-controllers.
- */
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/items")

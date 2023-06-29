@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-/**
- * TODO Sprint add-controllers.
- */
 
 @Slf4j
 @Validated

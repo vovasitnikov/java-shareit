@@ -6,9 +6,6 @@ import org.hibernate.Hibernate;
 import javax.persistence.*;
 import java.util.Objects;
 
-/**
- * TODO Sprint add-controllers.
- */
 
 @Entity
 @Getter
@@ -22,8 +19,8 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String name;                                        // @Column не указан
-    private String email;                                       // @Column не указан
+    private String name;
+    private String email;
 
     @Override
     public boolean equals(Object o) {

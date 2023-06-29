@@ -25,9 +25,9 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String text;                                    // @Column не указан, т.к названия поля и колонки совпадают
+    private String text;
 
-    @ManyToOne(fetch = FetchType.LAZY)                                      // связь когда множество this объектов связаны с одним объектом из данного поля
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "item_id")
     @ToString.Exclude
@@ -39,7 +39,7 @@ public class Comment {
     @ToString.Exclude
     private User author;
 
-    private LocalDateTime created;                           // @Column не указан
+    private LocalDateTime created;
 
     public Comment(Integer id, String text, LocalDateTime created) {
         this.id = id;

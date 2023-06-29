@@ -9,10 +9,6 @@ import ru.practicum.shareit.user.User;
 import javax.persistence.*;
 import java.util.Objects;
 
-/**
- * TODO Sprint add-controllers.
- */
-
 @Entity
 @Getter
 @Setter
@@ -26,9 +22,9 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String name;                                                    // @Column не указан
+    private String name;
 
-    private String description;                                             // @Column не указан
+    private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id")
