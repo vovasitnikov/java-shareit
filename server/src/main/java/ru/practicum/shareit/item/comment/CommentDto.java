@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
 
@@ -15,6 +16,7 @@ public class CommentDto {
 
     private Integer id;
 
+    @NotNull
     private String text;
 
     private String authorName;
