@@ -52,5 +52,4 @@ public class ItemController {
                                  @RequestBody CommentDto commentDto) {
         return itemService.addComment(userId, itemId, commentDto);
     }
-
 }

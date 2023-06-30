@@ -84,5 +84,4 @@ public class ItemRequestServiceImpl implements ItemRequestService {
                 .map(ItemMapper::toItemDto)
                 .collect(Collectors.toList());
     }
-
 }

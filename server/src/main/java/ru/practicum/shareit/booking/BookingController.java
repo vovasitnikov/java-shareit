@@ -46,5 +46,4 @@ public class BookingController {
                                                 @RequestParam(defaultValue = "10") int size) {
         return bookingService.getBookingsForOwner(ownerId, state, from, size);
     }
-
 }

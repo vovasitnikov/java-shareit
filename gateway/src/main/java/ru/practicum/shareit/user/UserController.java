@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-
 @Slf4j
 @Validated
 @Controller
@@ -48,5 +47,4 @@ public class UserController {
         log.info("Delete userId={}", userId);
         return userClient.deleteUser(userId);
     }
-
 }

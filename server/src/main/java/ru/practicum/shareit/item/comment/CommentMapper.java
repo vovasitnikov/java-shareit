@@ -16,5 +16,4 @@ public class CommentMapper {
                 commentDto.getText(),
                 commentDto.getCreated());
     }
-
 }

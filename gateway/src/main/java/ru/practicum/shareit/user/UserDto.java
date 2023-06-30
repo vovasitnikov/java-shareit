@@ -19,5 +19,4 @@ public class UserDto {
     @NotNull(message = "e-mail должен быть заполнен")
     @Email(message = "e-mail некорректен")
     private String email;
-
 }

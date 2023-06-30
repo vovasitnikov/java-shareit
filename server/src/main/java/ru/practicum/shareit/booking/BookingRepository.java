@@ -62,5 +62,4 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
             "JOIN bk.booker us " +
             "WHERE it.id = ?1 AND us.id = ?2")
     List<Booking> findBookingByUserAndItem(Integer itemId, Integer userId);
-
 }

@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/requests")
@@ -36,5 +35,4 @@ public class ItemRequestController {
                                                @RequestParam(defaultValue = "10") int size) {
         return itemRequestService.getAllRequests(userId, from, size);
     }
-
 }

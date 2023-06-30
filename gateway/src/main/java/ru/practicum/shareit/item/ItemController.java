@@ -11,7 +11,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 
-
 @Slf4j
 @Validated
 @Controller
@@ -66,5 +65,4 @@ public class ItemController {
         log.info("Added comment {} for itemId={} by userId={}", commentDto, itemId, userId);
         return itemClient.addComment(userId, itemId, commentDto);
     }
-
 }

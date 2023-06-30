@@ -57,5 +57,4 @@ public class Booking {
     public int hashCode() {
         return getClass().hashCode();
     }
-
 }

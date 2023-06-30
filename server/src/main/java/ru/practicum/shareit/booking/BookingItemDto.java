@@ -19,5 +19,4 @@ public class BookingItemDto {
     private Integer itemId;
     private Integer bookerId;
     private String status;
-
 }

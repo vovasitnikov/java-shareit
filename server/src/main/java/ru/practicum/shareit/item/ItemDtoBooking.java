@@ -19,5 +19,4 @@ public class ItemDtoBooking {
     private BookingItemDto nextBooking;
     private List<CommentDto> comments;
     private Integer requestId;
-
 }

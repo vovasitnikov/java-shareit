@@ -9,7 +9,6 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-
 @Entity
 @Getter
 @Setter
@@ -46,5 +45,4 @@ public class ItemRequest {
     public int hashCode() {
         return getClass().hashCode();
     }
-
 }

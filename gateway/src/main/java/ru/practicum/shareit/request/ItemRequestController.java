@@ -10,7 +10,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 
-
 @Slf4j
 @Validated
 @RestController
@@ -47,5 +46,4 @@ public class ItemRequestController {
         log.info("Get all requests by userId={}", userId);
         return itemRequestClient.getAllRequests(userId, from, size);
     }
-
 }

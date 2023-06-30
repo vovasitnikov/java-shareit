@@ -76,5 +76,4 @@ public class Item {
     public int hashCode() {
         return getClass().hashCode();
     }
-
 }

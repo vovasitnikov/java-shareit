@@ -65,5 +65,4 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(userId);
         log.info("Удален пользователь id={}", userId);
     }
-
 }

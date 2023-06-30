@@ -25,5 +25,4 @@ public class BookingDto {
     private User booker;
 
     private BookingStatus status;
-
 }

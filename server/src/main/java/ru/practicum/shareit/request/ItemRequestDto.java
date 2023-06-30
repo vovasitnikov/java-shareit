@@ -7,7 +7,6 @@ import ru.practicum.shareit.item.ItemDto;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
 @Data
 @Builder
 public class ItemRequestDto {
@@ -17,5 +16,4 @@ public class ItemRequestDto {
     private Integer requesterId;
     private LocalDateTime created;
     private List<ItemDto> items;
-
 }

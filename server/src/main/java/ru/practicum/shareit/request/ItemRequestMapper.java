@@ -16,5 +16,4 @@ public class ItemRequestMapper {
                 .description(itemRequestDto.getDescription())
                 .created(itemRequestDto.getCreated()).build();
     }
-
 }
