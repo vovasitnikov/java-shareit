@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import ru.practicum.shareit.booking.BookingStatus;
 import ru.practicum.shareit.item.ItemDto;
 import ru.practicum.shareit.user.UserDto;
 
@@ -34,11 +35,4 @@ public class BookingDto {
     private UserDto booker;
 
     private BookingStatus status;
-
-    public enum BookingStatus {
-        WAITING,
-        APPROVED,
-        REJECTED,
-        CANCELED
-    }
 }

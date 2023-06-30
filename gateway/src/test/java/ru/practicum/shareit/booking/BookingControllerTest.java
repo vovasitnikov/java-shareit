@@ -53,7 +53,7 @@ class BookingControllerTest {
         bookingDto = new BookingDto(1,
                 LocalDateTime.now().plusHours(1).plusNanos(1),
                 LocalDateTime.now().plusHours(2).plusNanos(1),
-                itemDto, userDto, BookingDto.BookingStatus.WAITING);
+                itemDto, userDto, BookingStatus.WAITING);
         bookItemRequestDto = new BookItemRequestDto(
                 itemDto.getId(),
                 LocalDateTime.now().plusHours(1).plusNanos(1),
@@ -84,7 +84,7 @@ class BookingControllerTest {
     @SneakyThrows
     @Test
     void responseToBooking_returnBooking() {
-        bookingDto.setStatus(BookingDto.BookingStatus.APPROVED);
+        bookingDto.setStatus(BookingStatus.APPROVED);
         ResponseEntity<Object> entity = new ResponseEntity<>(bookingDto, HttpStatus.OK);
         when(bookingClient.responseToBooking(anyLong(), anyLong(), anyBoolean())).thenReturn(entity);
 
@@ -95,7 +95,7 @@ class BookingControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(bookingDto.getId()), Integer.class))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.start", Matchers.is(bookingDto.getStart().toString()), LocalDateTime.class))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.end", Matchers.is(bookingDto.getEnd().toString()), LocalDateTime.class))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.status", Matchers.is(bookingDto.getStatus().toString()), BookingDto.BookingStatus.class))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.status", Matchers.is(bookingDto.getStatus().toString()), BookingStatus.class))
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
